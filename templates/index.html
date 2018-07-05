@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="myApp">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
 
 <div ng-controller="myCtrl">
     Book Name:
@@ -22,7 +17,4 @@
     </p>
 </div>
 
-<script src="static/js/angular.min.js"></script>
-<script src="static/js/flaskAng.js"></script>
-</body>
-</html>
+{% endblock %}
