@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+
+<div ng-controller="myCtrl">
+    Book Name:
+    <input type="text" ng-model="bookName" /><br>
+    Author Name:
+    <input type="text" ng-model="authorName"/><br>
+    Writen year:
+    <input type="text" ng-model="writtenYear"/><br>
+    <button ng-click="change1()">Save</button>
+
+    <br><br>
+    <p>
+        <span data-ng-bind="lastName"></span>
+    </p>
+</div>
+
+<script src="static/js/angular.min.js"></script>
+<script src="static/js/flaskAng.js"></script>
+</body>
+</html>
