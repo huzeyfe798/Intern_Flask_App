@@ -5,11 +5,11 @@
 <div ng-controller="myCtrl">
     <form>
     Favorite:
-    <input type="checkbox" ng-model="favoVal" ng-disabled="tobeVal">
+    <input type="checkbox" ng-model="favoVal"ng-init="favoVal=false" ng-disabled="tobeVal">
     Read:
-    <input type="checkbox" ng-model="readVal" ng-disabled="tobeVal">
+    <input type="checkbox" ng-model="readVal"ng-init="readVal=false" ng-disabled="tobeVal">
     To Be Read:
-    <input type="checkbox" ng-model="tobeVal" ng-disabled="favoVal || readVal">
+    <input type="checkbox" ng-model="tobeVal"ng-init="tobeVal=false" ng-disabled="favoVal || readVal">
     <br>
     Book name:
     <input type="text" ng-model="bookName" /><br>

@@ -9,7 +9,7 @@ def index():
 
 @app.route('/lang',methods=['POST'])
 def addOne():
-    name1 = {'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year']}
+    name1 = {'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
 
     with open('database.json') as inputfile:
         books = json.load(inputfile)
