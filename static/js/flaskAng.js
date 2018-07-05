@@ -8,6 +8,7 @@ app.controller("myCtrl", function($scope, $http){
         $http.post("/lang",{'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear}).then(successCallback, errorCallback);
         function successCallback(){
             $scope.lastName = "Your information saved";
+            console.log($scope.favoVal + " " + $scope.tobeVal)
 
         }
         function errorCallback(){

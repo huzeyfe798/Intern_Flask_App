@@ -3,7 +3,15 @@
 {% block content %}
 
 <div ng-controller="myCtrl">
-    Book Name:
+    <form>
+    Favorite:
+    <input type="checkbox" ng-model="favoVal" ng-disabled="tobeVal">
+    Read:
+    <input type="checkbox" ng-model="readVal" ng-disabled="tobeVal">
+    To Be Read:
+    <input type="checkbox" ng-model="tobeVal" ng-disabled="favoVal || readVal">
+    <br>
+    Book name:
     <input type="text" ng-model="bookName" /><br>
     Author Name:
     <input type="text" ng-model="authorName"/><br>
@@ -11,10 +19,14 @@
     <input type="text" ng-model="writtenYear"/><br>
     <button ng-click="change1()">Save</button>
 
+    </form>
+
     <br><br>
     <p>
         <span data-ng-bind="lastName"></span>
     </p>
+
 </div>
+
 
 {% endblock %}
