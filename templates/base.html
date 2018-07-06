@@ -7,11 +7,67 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% block head %}{% endblock %}
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <style>
+        /*navbar style*/
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
 
+        li {
+            float: left;
+            border-right:1px solid #bbb;
+        }
+
+        li:last-child {
+            border-right: none;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+
+        /*table style*/
+         table, th , td  {
+             border: 1px solid grey;
+             border-collapse: collapse;
+             padding: 5px;
+         }
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+    </style>
 </head>
 
 
 <body>
+<div>
+<ul>
+    <li><a class="active" href="home">Home</a></li>
+    <li><a href="favorite">Favorite</a></li>
+    <li><a href="toberead">ToBeRead</a></li>
+    <li style="float:right"><a href="addbook">Add Book</a></li>
+</ul>
+</div>
 <div id="content">{% block content %}{% endblock %}</div>
 
 <script src="static/js/bootstrap.min.js"></script>
