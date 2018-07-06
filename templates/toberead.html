@@ -9,14 +9,18 @@
             <th>Book Name</th>
             <th>Author Name</th>
             <th>Written Year</th>
+            <th>Read</th>
         </tr>
         <tr ng-repeat="x in books | filter: {toberead:true}">
             <td>// $index + 1 //</td>
             <td>// x.bookname //</td>
             <td>// x.authorname //</td>
             <td>// x.year //</td>
+            <td><button ng-click="changedatabase(x.toberead)">Send</button></td>
         </tr>
     </table>
+    <br>
+
 
 </div>
 

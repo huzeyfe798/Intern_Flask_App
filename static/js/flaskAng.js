@@ -10,8 +10,7 @@ app.controller("myCtrl", function($scope, $http){
     $scope.change1 = function () {
         $http.post("/lang",{'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
         function successCallback(){
-            $scope.lastName = "Your information saved";
-            console.log($scope.favoVal + " " + $scope.tobeVal)
+            console.log("Post successs");
 
         }
         function errorCallback(){
@@ -29,10 +28,23 @@ app.controller("myCtrlFav", function($scope, $http){
 
         function successCallback(datas){
           $scope.books = datas.data;
-          console.log(data);
         }
         function errorCallback(){
             console.log("Error");
+
+        }
+
+        $scope.changedatabase = function (a){
+
+            // $http.post("/langall",datas.data.then(successCallback, errorCallback);
+            // function successCallback(){
+            //     console.log("success")
+            //
+            // }
+            // function errorCallback(){
+            //     console.log("Error");,
+            //
+            // }
 
         }
 
