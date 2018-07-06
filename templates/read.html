@@ -10,7 +10,7 @@
             <th>Author Name</th>
             <th>Written Year</th>
         </tr>
-        <tr ng-repeat="x in books | filter: {toberead:true}">
+        <tr ng-repeat="x in books | filter: {read:true}">
             <td>// $index + 1 //</td>
             <td>// x.bookname //</td>
             <td>// x.authorname //</td>

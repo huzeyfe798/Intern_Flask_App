@@ -19,6 +19,10 @@ def homepage():
 def toberead():
     return render_template('toberead.html')
 
+@app.route('/read')
+def read():
+    return render_template('read.html')
+
 
 @app.route('/addbook')
 def adbook():
