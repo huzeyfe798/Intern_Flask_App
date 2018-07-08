@@ -69,6 +69,23 @@ app.controller("myCtrlFav", function($scope, $http){
             }
 
         }
+        $scope.removeFav= function (a){
+
+            var b = $scope.books.indexOf(a);
+
+            $scope.books[b].favorite = false;
+
+            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+            function successCallback(){
+                console.log("success")
+
+            }
+            function errorCallback(){
+                console.log("Error");
+
+            }
+
+        }
         $scope.deleteBook = function (a){
 
             var b = $scope.books.indexOf(a);
