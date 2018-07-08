@@ -3,22 +3,44 @@
 {% block content %}
 
 <div ng-controller="myCtrlFav">
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Book Name</th>
-            <th>Author Name</th>
-            <th>Written Year</th>
-            <th>Delete Book</th>
-        </tr>
-        <tr ng-repeat="x in books">
-            <td>// $index + 1 //</td>
-            <td>// x.bookname //</td>
-            <td>// x.authorname //</td>
-            <td>// x.year //</td>
-            <td><button ng-click="deleteBook(x)">Delete</button></td>
-        </tr>
-    </table>
+
+    <div id="category">
+        <section class="shelf">
+            <div class="container">
+                <div class="row" id="category_page.recs_1">
+                    <div class="cell" ng-repeat="x in books">
+                        <div class="content">
+                            <a>
+                                <figure>
+                                    <img src="https://i.idefix.com/cache/150x242-0/originals/0001750151001-1.jpg">
+                                </figure>
+                            </a>
+                            <span>// x.bookname //</span><br>
+                            <span>// x.authorname //</span><br>
+                            <span>// x.year //</span><br>
+                            <button ng-click="deleteBook(x)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!--<table>-->
+        <!--<tr>-->
+            <!--<th>No</th>-->
+            <!--<th>Book Name</th>-->
+            <!--<th>Author Name</th>-->
+            <!--<th>Written Year</th>-->
+            <!--<th>Delete Book</th>-->
+        <!--</tr>-->
+        <!--<tr ng-repeat="x in books">-->
+            <!--<td>// $index + 1 //</td>-->
+            <!--<td>// x.bookname //</td>-->
+            <!--<td>// x.authorname //</td>-->
+            <!--<td>// x.year //</td>-->
+            <!--<td><button ng-click="deleteBook(x)">Delete</button></td>-->
+        <!--</tr>-->
+    <!--</table>-->
 
 </div>
 
