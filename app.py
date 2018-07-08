@@ -28,12 +28,13 @@ def read():
 def adbook():
     return render_template('index.html')
 
-@app.route('/lang',methods=['POST'])
+@app.route('/post',methods=['POST'])
 def addOne():
     name1 = {'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
 
     with open('database.json') as inputfile:
         books = json.load(inputfile)
+        print(books)
         books.append(name1)
     with open('database.json','w') as outputfile:
         json.dump(books,outputfile)
@@ -46,6 +47,15 @@ def takeAll():
         books1 = json.load(inputfile)
 
     return jsonify(books1)
+
+@app.route('/postall',methods=['POST'])
+def addAll():
+
+    print(request.data)
+    with open('database.json','w') as outputfile:
+        json.dump(json.loads(request.data),outputfile)
+    return request.data
+
 
 
 

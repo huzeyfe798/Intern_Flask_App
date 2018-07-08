@@ -8,7 +8,7 @@ app.config(function($interpolateProvider) {
 app.controller("myCtrl", function($scope, $http){
 
     $scope.change1 = function () {
-        $http.post("/lang",{'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
+        $http.post("/post",{'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
         function successCallback(){
             console.log("Post successs");
 
@@ -36,15 +36,20 @@ app.controller("myCtrlFav", function($scope, $http){
 
         $scope.changedatabase = function (a){
 
-            // $http.post("/langall",datas.data.then(successCallback, errorCallback);
-            // function successCallback(){
-            //     console.log("success")
-            //
-            // }
-            // function errorCallback(){
-            //     console.log("Error");,
-            //
-            // }
+            var b = $scope.books.indexOf(a);
+
+            $scope.books[b].toberead = false;
+            $scope.books[b].read = true;
+
+            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+            function successCallback(){
+                console.log("success")
+
+            }
+            function errorCallback(){
+                console.log("Error");
+
+            }
 
         }
 
