@@ -52,6 +52,42 @@ app.controller("myCtrlFav", function($scope, $http){
             }
 
         }
+        $scope.changedatabaseR = function (a){
+
+            var b = $scope.books.indexOf(a);
+
+            $scope.books[b].favorite = true;
+
+            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+            function successCallback(){
+                console.log("success")
+
+            }
+            function errorCallback(){
+                console.log("Error");
+
+            }
+
+        }
+        $scope.deleteBook = function (a){
+
+            var b = $scope.books.indexOf(a);
+
+            $scope.books.splice(b,1);
+
+            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+            function successCallback(){
+            console.log("success")
+
+            }
+            function errorCallback(){
+                console.log("Error");
+
+            }
+
+        }
+
+
 
 
 });

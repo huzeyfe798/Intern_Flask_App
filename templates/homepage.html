@@ -9,12 +9,14 @@
             <th>Book Name</th>
             <th>Author Name</th>
             <th>Written Year</th>
+            <th>Delete Book</th>
         </tr>
         <tr ng-repeat="x in books">
             <td>// $index + 1 //</td>
             <td>// x.bookname //</td>
             <td>// x.authorname //</td>
             <td>// x.year //</td>
+            <td><button ng-click="deleteBook(x)">Send</button></td>
         </tr>
     </table>
 

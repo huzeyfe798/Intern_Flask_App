@@ -9,12 +9,14 @@
             <th>Book Name</th>
             <th>Author Name</th>
             <th>Written Year</th>
+            <th>Add To Favorite</th>
         </tr>
         <tr ng-repeat="x in books | filter: {read:true}">
             <td>// $index + 1 //</td>
             <td>// x.bookname //</td>
             <td>// x.authorname //</td>
             <td>// x.year //</td>
+            <td><button ng-click="changedatabaseR(x)">Send</button></td>
         </tr>
     </table>
 

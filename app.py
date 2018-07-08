@@ -34,8 +34,14 @@ def addOne():
 
     with open('database.json') as inputfile:
         books = json.load(inputfile)
-        print(books)
-        books.append(name1)
+        print(name1)
+        print(type(name1))
+        print(type(books))
+
+        if not any(name1['bookname'] == request.json['bookname'] for d in books):
+            books.append(name1)
+        else:
+            print("Book exist")
     with open('database.json','w') as outputfile:
         json.dump(books,outputfile)
     return jsonify({'names':name1})
