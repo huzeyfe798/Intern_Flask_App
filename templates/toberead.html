@@ -3,25 +3,21 @@
 {% block content %}
 
 <div ng-controller="myCtrlFav">
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Book Name</th>
-            <th>Author Name</th>
-            <th>Written Year</th>
-            <th>Read</th>
-        </tr>
-        <tr ng-repeat="x in books | filter: {toberead:true}">
-            <td>// $index + 1 //</td>
-            <td>// x.bookname //</td>
-            <td>// x.authorname //</td>
-            <td>// x.year //</td>
-            <td><button ng-click="changedatabase(x)">Send</button></td>
-        </tr>
-    </table>
-    <br>
-
-
+    <div class="container">
+        <div class="row">
+            <div class="cell" ng-repeat="x in books | filter: {toberead:true}">
+                <a>
+                    <figure>
+                        <img src="//x.imageURL//" height="233" width="150">
+                    </figure>
+                </a>
+                <span>Book Name: // x.bookname //</span><br>
+                <span>Author Name: // x.authorname //</span><br>
+                <span>Written Year: // x.year //</span><br>
+                <button ng-click="changedatabase(x)">Send</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 

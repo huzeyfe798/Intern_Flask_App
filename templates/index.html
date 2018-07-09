@@ -7,7 +7,7 @@
     Favorite:
     <input type="checkbox" ng-model="favoVal"ng-init="favoVal=false" ng-disabled="tobeVal">
     Read:
-    <input type="checkbox" ng-model="readVal"ng-init="readVal=false" ng-disabled="tobeVal">
+    <input ng-checked="true" type="checkbox" ng-model="readVal"ng-init="readVal=true" ng-disabled="tobeVal">
     To Be Read:
     <input type="checkbox" ng-model="tobeVal"ng-init="tobeVal=false" ng-disabled="favoVal || readVal">
     <br>
@@ -17,6 +17,8 @@
     <input type="text" ng-model="authorName"/><br>
     Writen year:
     <input type="text" ng-model="writtenYear"/><br>
+    Image URL:
+    <input type="text" ng-model="imageURL"/><br>
     <button ng-click="change1()">Save</button>
 
     </form>

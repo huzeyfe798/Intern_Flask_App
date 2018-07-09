@@ -30,18 +30,14 @@ def adbook():
 
 @app.route('/post',methods=['POST'])
 def addOne():
-    name1 = {'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
+    name1 = {'imageURL':request.json['imageURL'],'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
 
     with open('database.json') as inputfile:
         books = json.load(inputfile)
-        print(name1)
-        print(type(name1))
-        print(type(books))
-        books.append(name1)
-        # if not any(name1['bookname'] == request.json['bookname'] for d in books):
-        #     books.append(name1)
-        # else:
-        #     print("Book exist")
+        if name1 in books:
+            print("Book exist")
+        else:
+            books.append(name1)
     with open('database.json','w') as outputfile:
         json.dump(books,outputfile)
     return jsonify({'names':name1})
