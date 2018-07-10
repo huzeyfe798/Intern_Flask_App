@@ -1,0 +1,11 @@
+.box{
+    margin: 20px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    padding-left: 100px;
+    padding-right: 100px;
+    border: 1px solid grey;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+
+}

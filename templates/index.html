@@ -3,27 +3,36 @@
 {% block content %}
 
 <div ng-controller="myCtrl">
-    <form>
-    Favorite:
-    <input type="checkbox" ng-model="favoVal"ng-init="favoVal=false" ng-disabled="tobeVal">
-    Read:
-    <input ng-checked="true" type="checkbox" ng-model="readVal"ng-init="readVal=true" ng-disabled="tobeVal">
-    To Be Read:
-    <input type="checkbox" ng-model="tobeVal"ng-init="tobeVal=false" ng-disabled="favoVal || readVal">
-    <br>
-    Book name:
-    <input type="text" ng-model="bookName" /><br>
-    Author Name:
-    <input type="text" ng-model="authorName"/><br>
-    Writen year:
-    <input type="text" ng-model="writtenYear"/><br>
-    Image URL:
-    <input type="text" ng-model="imageURL"/><br>
-    <button ng-click="change1()">Save</button>
 
-    </form>
+        <div class="container">
+            <div class row></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="box">
+                    <div id="add-box">
+                        <h3 class="text-center">Add Book to Library</h3>
+                        <strong>Book name:</strong><br>
+                        <input type="text" ng-model="bookName" /><br><br>
+                        <strong>Author Name:</strong><br>
+                        <input type="text" ng-model="authorName"/><br><br>
+                        <strong>Writen year:</strong><br>
+                        <input type="text" ng-model="writtenYear"/><br><br>
+                        <strong>Image URL:</strong><br>
+                        <input type="text" ng-model="imageURL"/><br><br>
+                        <strong>Favorite:</strong>
+                        <input type="checkbox" ng-model="favoVal"ng-init="favoVal=false" ng-disabled="tobeVal">
+                        <strong>Read:</strong>
+                        <input ng-checked="true" type="checkbox" ng-model="readVal"ng-init="readVal=true" ng-disabled="tobeVal">
+                        <strong>To Be Read:</strong>
+                        <input type="checkbox" ng-model="tobeVal"ng-init="tobeVal=false" ng-disabled="favoVal || readVal">
+                        <button type="button" class="btn btn-success pull-right" ng-click="change1()">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
 
-    <br><br>
+            </div>
+        </div>
 
 </div>
 
