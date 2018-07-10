@@ -5,20 +5,64 @@
 <div ng-controller="myCtrlFav">
 
 
-    <div class="container">
-        <div class="row">
-            <div class="cell" ng-repeat="x in books | filter: {favorite:true}">
-                <a>
-                    <figure>
-                        <img src="//x.imageURL//" height="233" width="150">
-                    </figure>
-                </a>
-                <span>Book Name: // x.bookname //</span><br>
-                <span>Author Name: // x.authorname //</span><br>
-                <span>Written Year: // x.year //</span><br>
-                <button ng-click="removeFav(x)">Remove</button>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Book Modal</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <img class="book-img" ng-src="//current_book.imageURL//"/>
+                        </div>
+                        <div class="col-xs-8">
+                            <h4>
+                                <strong>
+                                    //current_book.bookname//
+                                </strong>
+                            </h4>
+                            <p><strong>By</strong>: <em>//current_book.authorname//</em></p>
+                            <br/>
+                            <p><strong>Published</strong>: //current_book.year//</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="bookbox">
+                <div id="books-box">
+                    <h3 class="text-center">Favorite Books</h3>
+                    <br><hr/>
+                    <ul id="mybook-list">
+                        <li ng-repeat="book in books | filter: {favorite:true}">
+                            <div title="Show This Book's Infos" class="row transition" ng-click="showBook(book)">
+                                <div class="col-md-12">
+                                    <img class="book-img-2" ng-src="//book.imageURL//"/>
+                                </div>
+                                <div class="col-md-12">
+                                    <h4>
+                                        <strong>
+                                            //book.bookname//
+                                        </strong>
+                                    </h4>
+                                    <p class="text-left"><a class="btn btn-info transition" ng-click="removeFav(book)">Remove</a></p>
+                                </div>
+                            </div>
+                            <hr/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-2"></div>
     </div>
 
 </div>

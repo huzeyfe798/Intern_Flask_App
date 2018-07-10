@@ -34,7 +34,12 @@ app.controller("myCtrlFav", function($scope, $http){
 
         }
 
-        $scope.changedatabase = function (a){
+        $scope.showBook = function(book) {
+            $scope.current_book = book;
+            $("#myModal").modal("show");
+        }
+
+        $scope.sendtoread = function (a){
 
             var b = $scope.books.indexOf(a);
 
@@ -52,7 +57,7 @@ app.controller("myCtrlFav", function($scope, $http){
             }
 
         }
-        $scope.changedatabaseR = function (a){
+        $scope.sendtofav = function (a){
 
             var b = $scope.books.indexOf(a);
 
