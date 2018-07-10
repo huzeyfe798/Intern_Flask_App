@@ -9,6 +9,24 @@
     border-radius: 25px;
 
 }
+.transition {
+    -webkit-transition: transition 0.3s;
+    -moz-transition: transition 0.3s;
+    -o-transition: transition 0.3s;
+    -ms-transition: transition 0.3s;
+    transition: 0.3s;
+}
+.mid{
+    display: block;
+    margin: auto;
+}
+.bookbox {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid grey;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 2px;
+}
 
 .book-img {
     width: 325px;

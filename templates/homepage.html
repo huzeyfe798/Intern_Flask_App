@@ -2,7 +2,13 @@
 
 {% block content %}
 
-<div ng-controller="myCtrlFav">
+<div ng-controller="myCtrlFav" ng-init="initfunc()">
+
+    <div id="msg-popup-container" class="transition">
+        <div id="msg-popup" class="transition ghost">
+            Book Added To Saved!
+        </div>
+    </div>
 
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -32,18 +38,67 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="col-md-2"></div>
+    <div class="container-fluid" style="padding-top: 15px;">
+        <div class="row">
+        <div class="col-md-4">
+            <div class="bookbox">
+                <div id="search-box">
+                    <h3 class="text-center">Search For Books</h3>
+                    <input type="text" class="mid" placeholder="Title" ng-model="query"/>
+                    <br/>
+                    <p class="text-center"><a class="btn btn-success transition" ng-click="searchBooks()">Submit</a> </p>
+                    <p class="text-center"><a class="btn btn-primary transition" ng-click="clearResults()">Clear Results</a></p>
+                    <br>
+                    <p class="text-center" id="msg"></p>
+                </div>
+
+                <div id="loading-box" style="display: none;">
+                    <img class="middlr" src="static/Loading_icon.gif" width="175px" />
+                </div>
+
+            </div>
+
+            <div class="bookbox">
+                <div id="result-box">
+                    <h3 class="text-center">Results</h3>
+                    <p class="text-center" id="query"></p>
+                    <hr/>
+                    <ul id="results-list">
+                        <li ng-repeat="book in result_books">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img class="book-img" ng-src="//book.volumeInfo.imageLinks.thumbnail//">
+                                </div>
+                                <div class="col-md-8">
+                                    <h4>
+                                        <strong>
+                                            //book.volumeInfo.title//
+                                        </strong>
+                                    </h4>
+                                    <p><strong>By</strong>: <em>//book.volumeInfo.authors[0]//</em></p>
+                                    <p><strong>Published</strong>: //book.volumeInfo.publishedDate//</p>
+3
+                                    <p class="text-left"><a class="btn btn-info transition" ng-click="addBook(this.book)">Add To Read</a></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
         <div class="col-md-8">
             <div class="bookbox">
                 <div id="books-box">
-                    <h3 class="text-center">Read Books</h3>
-                    <br><hr/>
-                    <ul id="mybook-list">
-                        <li ng-repeat="book in books">
+                    <h3 class="text-center">Saved Books</h3>
+                    <p class="text-center">//books.length//</p>
+                    <hr/>
+                    <ul id="mybooks-list">
+                        <li ng-repeat="book in books | filter:filterData">
                             <div title="Show This Book's Infos" class="row transition" ng-click="showBook(book)">
                                 <div class="col-md-12">
-                                    <img class="book-img-2" ng-src="//book.imageURL//"/>
+                                    <img class="book-img-2" ng-src="//book.imageURL//">
                                 </div>
                                 <div class="col-md-12">
                                     <h4>
@@ -54,14 +109,13 @@
                                     <p class="text-left"><a class="btn btn-info transition" ng-click="deleteBook(book)">Remove</a></p>
                                 </div>
                             </div>
-                            <hr/>
                         </li>
+
                     </ul>
                 </div>
             </div>
-
         </div>
-        <div class="col-md-2"></div>
+        </div>
     </div>
 
 
