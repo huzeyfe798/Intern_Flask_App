@@ -1,7 +1,11 @@
+import mysql.connector
+
 from flask import Flask,render_template,request,jsonify,json
 app = Flask(__name__)
 
+db = mysql.connector.connect(user = 'root', database='library',password = 'Hu192478')
 
+cur = db.cursor()
 
 @app.route('/')
 def index():
@@ -31,15 +35,27 @@ def adbook():
 @app.route('/post',methods=['POST'])
 def addOne():
     name1 = {'imageURL':request.json['imageURL'],'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
+    print("hello")
+    print(request.json['read'])
+    bookname=request.json['bookname']
+    authorname=request.json['authorname']
+    year=request.json['year']
+    imageURL=request.json['imageURL']
+    read=request.json['read']
+    favorite=request.json['favorite']
+    toberead=request.json['toberead']
 
-    with open('database.json') as inputfile:
-        books = json.load(inputfile)
-        if name1 in books:
-            print("Book exist")
-        else:
-            books.append(name1)
-    with open('database.json','w') as outputfile:
-        json.dump(books,outputfile)
+    add_book = ("INSERT INTO book_list "
+                "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
+                " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+
+    data_word = (str(bookname),str(authorname),str(year),str(imageURL),str(read),str(favorite),str(toberead))
+
+    print(data_word)
+    cur.execute(add_book,data_word)
+
+    db.commit()
+
     return jsonify({'names':name1})
 
 @app.route('/jsondatas',methods=['GET'])
