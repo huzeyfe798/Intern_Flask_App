@@ -41,8 +41,8 @@
                     <br><hr/>
                     <ul id="mybook-list">
                         <li ng-repeat="book in books | filter: {toberead:true}">
-                            <div title="Show This Book's Infos" class="row transition" ng-click="showBook(book)">
-                                <div class="col-md-12">
+                            <div  class="row transition" >
+                                <div div title="Show This Book's  Infos" ng-click="showBook(book)" class="col-md-12" class="col-md-12">
                                     <img class="book-img-2" ng-src="//book.imageURL//"/>
                                 </div>
                                 <div class="col-md-12">
@@ -51,7 +51,7 @@
                                             //book.bookname//
                                         </strong>
                                     </h4>
-                                    <p class="text-left"><a class="btn btn-info transition" ng-click="sendtoread(book)">Remove</a></p>
+                                    <p class="text-left"><a class="btn btn-success transition" ng-click="sendtoread(book)">Send to Read</a></p>
                                 </div>
                             </div>
                             <hr/>

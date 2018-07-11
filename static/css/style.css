@@ -1,4 +1,17 @@
+body {
+    background: url(860_main_library_bacteria.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
 .box{
+    background: url(green_leafy_wood_background_hd_picture.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     margin: 20px;
     padding-top: 50px;
     padding-bottom: 50px;
@@ -21,11 +34,16 @@
     margin: auto;
 }
 .bookbox {
+    background: url(green_leafy_wood_background_hd_picture.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     margin: 10px;
     padding: 10px;
-    border: 1px solid grey;
+    border: 5px solid grey;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    -webkit-border-radius: 2px;
+    -webkit-border-radius: 25px;
 }
 
 .book-img {

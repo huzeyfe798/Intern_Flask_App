@@ -46,7 +46,7 @@
                     <h3 class="text-center">Search For Books</h3>
                     <input type="text" class="mid" placeholder="Title" ng-model="query"/>
                     <br/>
-                    <p class="text-center"><a class="btn btn-success transition" ng-click="searchBooks()">Submit</a> </p>
+                    <p class="text-center"><a class="btn btn-success transition" ng-click="searchBooks()">Search</a> </p>
                     <p class="text-center"><a class="btn btn-primary transition" ng-click="clearResults()">Clear Results</a></p>
                     <br>
                     <p class="text-center" id="msg"></p>
@@ -78,7 +78,7 @@
                                     <p><strong>By</strong>: <em>//book.volumeInfo.authors[0]//</em></p>
                                     <p><strong>Published</strong>: //book.volumeInfo.publishedDate//</p>
 3
-                                    <p class="text-left"><a class="btn btn-info transition" ng-click="addBook(this.book)">Add To Read</a></p>
+                                    <p class="text-left"><a class="btn btn-success transition" ng-click="addBook(this.book)">Add To Be Read</a></p>
                                 </div>
                             </div>
                         </li>
@@ -96,8 +96,8 @@
                     <hr/>
                     <ul id="mybooks-list">
                         <li ng-repeat="book in books | filter:filterData">
-                            <div title="Show This Book's Infos" class="row transition" ng-click="showBook(book)">
-                                <div class="col-md-12">
+                            <div  class="row transition" >
+                                <div div title="Show This Book's  Infos" ng-click="showBook(book)" class="col-md-12" class="col-md-12">
                                     <img class="book-img-2" ng-src="//book.imageURL//">
                                 </div>
                                 <div class="col-md-12">
@@ -106,7 +106,7 @@
                                             //book.bookname//
                                         </strong>
                                     </h4>
-                                    <p class="text-left"><a class="btn btn-info transition" ng-click="deleteBook(book)">Remove</a></p>
+                                    <p class="text-left"><a class="btn btn-success transition" ng-click="deleteBook(book)">Remove</a></p>
                                 </div>
                             </div>
                         </li>
