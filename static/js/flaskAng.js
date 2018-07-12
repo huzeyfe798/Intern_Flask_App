@@ -9,12 +9,59 @@ app.controller("myCtrl", function($scope, $http){
 
     $scope.change1 = function () {
         $http.post("/post",{'imageURL':$scope.imageURL,'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
-        function successCallback(){
-            console.log("Post successs");
+        function successCallback(resp){
+
+            $scope.backmsg = resp.data['status'];
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'success',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+
+            });
 
         }
-        function errorCallback(){
-            console.log("Error");
+        function errorCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+
+            });
 
         }
 
@@ -34,8 +81,32 @@ app.controller("myCtrlFav", function($scope, $http){
     function successCallback(datas){
         $scope.books = datas.data;
     }
-    function errorCallback(){
-        console.log("Error");
+    function errorCallback(resp){
+        $scope.backmsg = resp.data['status'];
+        $.notify({
+            // options
+            icon: 'glyphicon glyphicon-warning-sign',
+            message: $scope.backmsg
+        },{
+            // settings
+            type: 'danger',
+            allow_dismiss: true,
+            placement: {
+                from: "bottom",
+                align: "center"
+            },
+            offset: 20,
+            spacing: 10,
+            z_index: 1031,
+            delay: 5000,
+            timer: 1000,
+            animate: {
+                enter: 'animated fadeInUp',
+                exit: 'animated fadeOutDown'
+            }
+
+        });
+
 
     }
 
@@ -81,7 +152,7 @@ app.controller("myCtrlFav", function($scope, $http){
                 var request = req_prefix + $scope.query;
 
                 $http.get(request).then(successCallback, errorCallback);
-                3
+
                 function successCallback(resp){
                     if(resp.data.items && resp.data.items.length > 0){
                         $scope.result_books = resp.data.items;
@@ -156,12 +227,58 @@ app.controller("myCtrlFav", function($scope, $http){
 
             $scope.books.push(createfake);
             $http.post("/post",create ).then(successCallback, errorCallback);
-            function successCallback(){
-                console.log("Post successs");
+            function successCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
-            function errorCallback(){
-                console.log("Error");
+            function errorCallback(resp3){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
 
@@ -192,12 +309,58 @@ app.controller("myCtrlFav", function($scope, $http){
 
 
             $http.post("/sendtoread",databook).then(successCallback, errorCallback);
-            function successCallback(){
-                console.log("success")
+            function successCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
-            function errorCallback(){
-                console.log("Error");
+            function errorCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
 
@@ -206,21 +369,69 @@ app.controller("myCtrlFav", function($scope, $http){
 
             var b = $scope.books.indexOf(a);
 
+            var databook = {
+                name : $scope.books[b][0], year : $scope.books[b][2],fav:$scope.books[b][5]
+            };
+
             $scope.books[b][5] = true;
 
 
-            var databook = {
-                name : $scope.books[b][0], year : $scope.books[b][2]
-            };
+
 
 
             $http.post("/sendtofav",databook).then(successCallback, errorCallback);
-            function successCallback(){
-                console.log("success")
+            function successCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings3
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
-            function errorCallback(){
-                console.log("Error");
+            function errorCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
 
@@ -237,12 +448,58 @@ app.controller("myCtrlFav", function($scope, $http){
             }
 
             $http.post("/removefav",databook).then(successCallback, errorCallback);
-            function successCallback(){
-                console.log("success")
+            function successCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
-            function errorCallback(){
-                console.log("Error");
+            function errorCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
 
@@ -258,12 +515,58 @@ app.controller("myCtrlFav", function($scope, $http){
 
 
             $http.post("/deletebook",databook).then(successCallback, errorCallback);
-            function successCallback(){
-            console.log("success")
+            function successCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
-            function errorCallback(){
-                console.log("Error");
+            function errorCallback(resp){
+                $scope.backmsg = resp.data['status'];
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
 
             }
 

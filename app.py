@@ -34,107 +34,131 @@ def adbook():
 
 @app.route('/post',methods=['POST'])
 def addOne():
-    name1 = {'imageURL':request.json['imageURL'],'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
+    try:
 
-    bookname=request.json['bookname']
-    authorname=request.json['authorname']
-    year=request.json['year']
-    imageURL=request.json['imageURL']
-    read=request.json['read']
-    favorite=request.json['favorite']
-    toberead=request.json['toberead']
+        bookname=request.json['bookname']
+        authorname=request.json['authorname']
+        year=request.json['year']
+        imageURL=request.json['imageURL']
+        read=request.json['read']
+        favorite=request.json['favorite']
+        toberead=request.json['toberead']
 
-    search_book=(" SELECT *  FROM book_list"
-                 "   WHERE `bookname`=%s AND `year`=%s")
-    data_word1=(str(bookname),str(year))
+        search_book=(" SELECT *  FROM book_list"
+                     "   WHERE `bookname`=%s AND `year`=%s")
+        data_word1=(str(bookname),str(year))
 
-    cur.execute(search_book,data_word1)
+        cur.execute(search_book,data_word1)
 
-    a=cur.fetchall()
+        a=cur.fetchall()
 
-    if (len(a) == 0):
+        if (len(a) == 0):
 
 
 
-        add_book = ("INSERT INTO book_list "
-                    "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
-                    " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+            add_book = ("INSERT INTO book_list "
+                        "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
+                        " VALUES (%s,%s,%s, %s, %s, %s, %s)")
 
-        data_word = (str(bookname),str(authorname),str(year),str(imageURL),str(read),str(favorite),str(toberead))
+            data_word = (str(bookname),str(authorname),str(year),str(imageURL),str(read),str(favorite),str(toberead))
 
-        cur.execute(add_book,data_word)
+            cur.execute(add_book,data_word)
 
-        db.commit()
+            db.commit()
+            return jsonify({'status':'Saved'})
 
-    return jsonify({'names':name1})
+        return jsonify({'status':'This book already exists'})
+
+    except:
+
+        return jsonify({'status':'Cant Saved'})
 
 @app.route('/jsondatas',methods=['GET'])
 def takeAll():
 
-    cur.execute("SELECT `bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead` FROM book_list")
+    try:
+        cur.execute("SELECT `bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead` FROM book_list")
 
-    books1=[];
+        books1=[];
 
-    for a in cur:
-        books1.append(a)
+        for a in cur:
+            books1.append(a)
 
-    return jsonify(books1)
+        return jsonify(books1)
+    except:
+        return jsonify({'status':'Database Connection Error'})
 
 
 @app.route('/sendtoread', methods=['POST'])
 def sendtoread():
+    try:
+        query = (" UPDATE book_list"
+                 "  SET `read`='true',`toberead`='false'"
+                    "WHERE `bookname`=%s AND `year`=%s")
+        b=json.loads(request.data)
+        datas=(b['name'],b['year'])
 
-    query = (" UPDATE book_list"
-             "  SET `read`='true',`toberead`='false'"
-                "WHERE `bookname`=%s AND `year`=%s")
-    b=json.loads(request.data)
-    datas=(b['name'],b['year'])
+        cur.execute(query,datas)
+        db.commit()
 
-    cur.execute(query,datas)
-    db.commit()
-
-    return request.data[2]
+        return jsonify({'status':'Book send to read.'})
+    except:
+        return jsonify({'status':'Book cant send to read.'})
 
 @app.route('/sendtofav', methods=['POST'])
 def sendtofav():
 
-    query = (" UPDATE book_list"
-             "  SET `favorite`='true'"
-             "WHERE `bookname`=%s AND `year`=%s")
-    b=json.loads(request.data)
-    datas=(b['name'],b['year'])
+    try:
 
-    cur.execute(query,datas)
-    db.commit()
+        query = (" UPDATE book_list"
+                 "  SET `favorite`='true'"
+                 "WHERE `bookname`=%s AND `year`=%s")
+        b=json.loads(request.data)
+        datas=(b['name'],b['year'])
+        print(b['fav'])
+        if b['fav'] == 'false':
+            cur.execute(query,datas)
+            db.commit()
 
-    return request.data[2]
+            return jsonify({'status':'Book add to favorite.'})
+
+        return jsonify({'status':'Book already into favorite.'})
+    except:
+        return jsonify({'status':'Book cant add to favorite.'})
+
 
 @app.route('/removefav', methods=['POST'])
 def removefav():
+    try:
 
-    query = (" UPDATE book_list"
-             "  SET `favorite`='false'"
-             "WHERE `bookname`=%s AND `year`=%s")
-    b=json.loads(request.data)
-    datas=(b['name'],b['year'])
+        query = (" UPDATE book_list"
+                 "  SET `favorite`='false'"
+                 "WHERE `bookname`=%s AND `year`=%s")
+        b=json.loads(request.data)
+        datas=(b['name'],b['year'])
 
-    cur.execute(query,datas)
-    db.commit()
+        cur.execute(query,datas)
+        db.commit()
 
-    return request.data[2]
+        return jsonify({'status':'Book remove from favorite.'})
+    except:
+        return jsonify({'status':'Book cant remove from favorite.'})
 
 @app.route('/deletebook', methods=['POST'])
 def deletebook():
+    try:
+        query = (" DELETE  FROM book_list"
+                 "   WHERE `bookname`=%s AND `year`=%s")
+        b=json.loads(request.data)
+        datas=(b['name'],b['year'])
 
-    query = (" DELETE  FROM book_list"
-             "   WHERE `bookname`=%s AND `year`=%s")
-    b=json.loads(request.data)
-    datas=(b['name'],b['year'])
+        cur.execute(query,datas)
+        db.commit()
 
-    cur.execute(query,datas)
-    db.commit()
 
-    return request.data[2]
+        return jsonify({'status':'Book deleted.'})
+    except:
+        return jsonify({'status':'Book cant deleted'})
 
 
 
