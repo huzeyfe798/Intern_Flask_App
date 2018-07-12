@@ -35,8 +35,7 @@ def adbook():
 @app.route('/post',methods=['POST'])
 def addOne():
     name1 = {'imageURL':request.json['imageURL'],'bookname' : request.json['bookname'],'authorname' : request.json['authorname'],'year' : request.json['year'],'favorite' : request.json['favorite'],'read' : request.json['read'],'toberead' : request.json['toberead']}
-    print("hello")
-    print(request.json['read'])
+
     bookname=request.json['bookname']
     authorname=request.json['authorname']
     year=request.json['year']
@@ -45,34 +44,97 @@ def addOne():
     favorite=request.json['favorite']
     toberead=request.json['toberead']
 
-    add_book = ("INSERT INTO book_list "
-                "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
-                " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+    search_book=(" SELECT *  FROM book_list"
+                 "   WHERE `bookname`=%s AND `year`=%s")
+    data_word1=(str(bookname),str(year))
 
-    data_word = (str(bookname),str(authorname),str(year),str(imageURL),str(read),str(favorite),str(toberead))
+    cur.execute(search_book,data_word1)
 
-    print(data_word)
-    cur.execute(add_book,data_word)
+    a=cur.fetchall()
 
-    db.commit()
+    if (len(a) == 0):
+
+
+
+        add_book = ("INSERT INTO book_list "
+                    "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
+                    " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+
+        data_word = (str(bookname),str(authorname),str(year),str(imageURL),str(read),str(favorite),str(toberead))
+
+        cur.execute(add_book,data_word)
+
+        db.commit()
 
     return jsonify({'names':name1})
 
 @app.route('/jsondatas',methods=['GET'])
 def takeAll():
 
-    with open('database.json') as inputfile:
-        books1 = json.load(inputfile)
+    cur.execute("SELECT `bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead` FROM book_list")
+
+    books1=[];
+
+    for a in cur:
+        books1.append(a)
 
     return jsonify(books1)
 
-@app.route('/postall',methods=['POST'])
-def addAll():
 
-    print(request.data)
-    with open('database.json','w') as outputfile:
-        json.dump(json.loads(request.data),outputfile)
-    return request.data
+@app.route('/sendtoread', methods=['POST'])
+def sendtoread():
+
+    query = (" UPDATE book_list"
+             "  SET `read`='true',`toberead`='false'"
+                "WHERE `bookname`=%s AND `year`=%s")
+    b=json.loads(request.data)
+    datas=(b['name'],b['year'])
+
+    cur.execute(query,datas)
+    db.commit()
+
+    return request.data[2]
+
+@app.route('/sendtofav', methods=['POST'])
+def sendtofav():
+
+    query = (" UPDATE book_list"
+             "  SET `favorite`='true'"
+             "WHERE `bookname`=%s AND `year`=%s")
+    b=json.loads(request.data)
+    datas=(b['name'],b['year'])
+
+    cur.execute(query,datas)
+    db.commit()
+
+    return request.data[2]
+
+@app.route('/removefav', methods=['POST'])
+def removefav():
+
+    query = (" UPDATE book_list"
+             "  SET `favorite`='false'"
+             "WHERE `bookname`=%s AND `year`=%s")
+    b=json.loads(request.data)
+    datas=(b['name'],b['year'])
+
+    cur.execute(query,datas)
+    db.commit()
+
+    return request.data[2]
+
+@app.route('/deletebook', methods=['POST'])
+def deletebook():
+
+    query = (" DELETE  FROM book_list"
+             "   WHERE `bookname`=%s AND `year`=%s")
+    b=json.loads(request.data)
+    datas=(b['name'],b['year'])
+
+    cur.execute(query,datas)
+    db.commit()
+
+    return request.data[2]
 
 
 

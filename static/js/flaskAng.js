@@ -29,6 +29,28 @@ app.controller("myCtrlFav", function($scope, $http){
         $scope.result_books = [];
 
 
+    $http.get('/jsondatas').then(successCallback, errorCallback);
+
+    function successCallback(datas){
+        $scope.books = datas.data;
+    }
+    function errorCallback(){
+        console.log("Error");
+
+    }
+
+    $scope.filterBe = function(item){
+        return (item[6] == "true");
+    }
+    $scope.filterFav = function(item){
+        return (item[5] == "true");
+    }
+    $scope.filterRe = function(item){
+
+        return (item[4] == "true");
+    }
+
+
 
     $scope.searchBooks = function(){
 
@@ -44,13 +66,13 @@ app.controller("myCtrlFav", function($scope, $http){
 
             for(x in $scope.books){
 
-                if($scope.query == $scope.books[x].bookname){
+                if($scope.query == $scope.books[x][0]){
                   contr = true;
                 }
             }
             if(contr){
                 $scope.filterData = function(item){
-                    return item.bookname == $scope.query;
+                    return item[0] == $scope.query;
                 }
                 $("#search-box").show();
                 $("#loading-box").hide();
@@ -96,31 +118,43 @@ app.controller("myCtrlFav", function($scope, $http){
         $scope.addBook = function(b){
 
             var create = {};
+            var createfake = {};
             if(b.volumeInfo.hasOwnProperty('imageLinks')){
                 create['imageURL']= b.volumeInfo.imageLinks.thumbnail;
+                createfake[3]= b.volumeInfo.imageLinks.thumbnail;
             }else{
                 create['imageURL']= "";
+                createfake[3]= "";
             }
             if(b.volumeInfo.hasOwnProperty('title')){
                 create['bookname']= b.volumeInfo.title;
+                createfake[0]= b.volumeInfo.title;
             }else{
                 create['bookname']= "";
+                createfake[0]= "";
             }
             if(b.volumeInfo.hasOwnProperty('authors')){
                 create['authorname']= b.volumeInfo.authors[0];
+                createfake[1]= b.volumeInfo.authors[0];
             }else{
                 create['authorname']= "";
+                createfake[1]= "";
             }
             if(b.volumeInfo.hasOwnProperty('publishedDate')){
                 create['year']= b.volumeInfo.publishedDate;
+                createfake[2]= b.volumeInfo.publishedDate;
             }else{
                 create['year']= "";
+                createfake[2]= "";
             }
             create['read']= "false";
+            createfake[4]= "false";
             create['favorite']= "false";
+            createfake[5]= "false";
             create['toberead']= "true";
+            createfake[6]= "true";
 
-            $scope.books.push(create);
+            $scope.books.push(createfake);
             $http.post("/post",create ).then(successCallback, errorCallback);
             function successCallback(){
                 console.log("Post successs");
@@ -138,16 +172,7 @@ app.controller("myCtrlFav", function($scope, $http){
 
 
 
-        // if atılcak
-        $http.get('/jsondatas').then(successCallback, errorCallback);
 
-        function successCallback(datas){
-          $scope.books = datas.data;
-        }
-        function errorCallback(){
-            console.log("Error");
-
-        }
 
         $scope.showBook = function(book) {
             $scope.current_book = book;
@@ -158,10 +183,15 @@ app.controller("myCtrlFav", function($scope, $http){
 
             var b = $scope.books.indexOf(a);
 
-            $scope.books[b].toberead = false;
-            $scope.books[b].read = true;
+            $scope.books[b][6] = false;
+            $scope.books[b][4] = true;
 
-            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+            var databook = {
+                name : $scope.books[b][0], year : $scope.books[b][2]
+            };
+
+
+            $http.post("/sendtoread",databook).then(successCallback, errorCallback);
             function successCallback(){
                 console.log("success")
 
@@ -176,9 +206,15 @@ app.controller("myCtrlFav", function($scope, $http){
 
             var b = $scope.books.indexOf(a);
 
-            $scope.books[b].favorite = true;
+            $scope.books[b][5] = true;
 
-            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+
+            var databook = {
+                name : $scope.books[b][0], year : $scope.books[b][2]
+            };
+
+
+            $http.post("/sendtofav",databook).then(successCallback, errorCallback);
             function successCallback(){
                 console.log("success")
 
@@ -193,9 +229,14 @@ app.controller("myCtrlFav", function($scope, $http){
 
             var b = $scope.books.indexOf(a);
 
-            $scope.books[b].favorite = false;
+            $scope.books[b][5] = false;
 
-            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+
+            var databook = {
+                name : $scope.books[b][0], year : $scope.books[b][2]
+            }
+
+            $http.post("/removefav",databook).then(successCallback, errorCallback);
             function successCallback(){
                 console.log("success")
 
@@ -210,9 +251,13 @@ app.controller("myCtrlFav", function($scope, $http){
 
             var b = $scope.books.indexOf(a);
 
-            $scope.books.splice(b,1);
+            var databook = {
+                name : $scope.books[b][0], year : $scope.books[b][2]
+            }
 
-            $http.post("/postall",$scope.books).then(successCallback, errorCallback);
+
+
+            $http.post("/deletebook",databook).then(successCallback, errorCallback);
             function successCallback(){
             console.log("success")
 
@@ -221,6 +266,8 @@ app.controller("myCtrlFav", function($scope, $http){
                 console.log("Error");
 
             }
+
+            $scope.books.splice(b,1);
 
         }
 

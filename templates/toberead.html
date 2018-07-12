@@ -14,17 +14,17 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-4">
-                            <img class="book-img" ng-src="//current_book.imageURL//"/>
+                            <img class="book-img" ng-src="//current_book[3]//"/>
                         </div>
                         <div class="col-xs-8">
                             <h4>
                                 <strong>
-                                    //current_book.bookname//
+                                    //current_book[0]//
                                 </strong>
                             </h4>
-                            <p><strong>By</strong>: <em>//current_book.authorname//</em></p>
+                            <p><strong>By</strong>: <em>//current_book[1]//</em></p>
                             <br/>
-                            <p><strong>Published</strong>: //current_book.year//</p>
+                            <p><strong>Published</strong>: //current_book[2]//</p>
                         </div>
                     </div>
                 </div>
@@ -40,15 +40,15 @@
                     <h3 class="text-center">To Be Read Books</h3>
                     <br><hr/>
                     <ul id="mybook-list">
-                        <li ng-repeat="book in books | filter: {toberead:true}">
+                        <li ng-repeat="book in books | filter: filterBe">
                             <div  class="row transition" >
                                 <div div title="Show This Book's  Infos" ng-click="showBook(book)" class="col-md-12" class="col-md-12">
-                                    <img class="book-img-2" ng-src="//book.imageURL//"/>
+                                    <img class="book-img-2" ng-src="//book[3]//"/>
                                 </div>
                                 <div class="col-md-12">
                                     <h4>
                                         <strong>
-                                            //book.bookname//
+                                            //book[0]//
                                         </strong>
                                     </h4>
                                     <p class="text-left"><a class="btn btn-success transition" ng-click="sendtoread(book)">Send to Read</a></p>
