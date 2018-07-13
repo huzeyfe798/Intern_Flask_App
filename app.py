@@ -152,13 +152,13 @@ def deletebook():
         b=json.loads(request.data)
         datas=(b['name'],b['year'])
 
-        cur.execute(query,datas)
+        cu.execute(query,datas)
         db.commit()
 
 
-        return jsonify({'status':'Book deleted.'})
+        return jsonify({'status':'Book deleted.','check':'false'})
     except:
-        return jsonify({'status':'Book cant deleted'})
+        return jsonify({'status':'Book cant deleted','check':'false'})
 
 
 

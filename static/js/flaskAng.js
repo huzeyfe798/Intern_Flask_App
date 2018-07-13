@@ -517,13 +517,43 @@ app.controller("myCtrlFav", function($scope, $http){
             $http.post("/deletebook",databook).then(successCallback, errorCallback);
             function successCallback(resp){
                 $scope.backmsg = resp.data['status'];
+                var control=resp.data['check'];
+                if (control != 'false'){
+                    $.notify({
+                        // options
+                        icon: 'glyphicon glyphicon-warning-sign',
+                        message: $scope.backmsg
+                    },{
+                        // settings
+                        type: 'success',
+                        allow_dismiss: true,
+                        placement: {
+                            from: "bottom",
+                            align: "center"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        animate: {
+                            enter: 'animated fadeInUp',
+                            exit: 'animated fadeOutDown'
+                        }
+
+                    });
+                    $scope.books.splice(b,1);
+
+
+                }
+
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
                     message: $scope.backmsg
                 },{
                     // settings
-                    type: 'success',
+                    type: 'danger',
                     allow_dismiss: true,
                     placement: {
                         from: "bottom",
@@ -542,8 +572,8 @@ app.controller("myCtrlFav", function($scope, $http){
                 });
 
             }
-            function errorCallback(resp){
-                $scope.backmsg = resp.data['status'];
+            function errorCallback(){
+                $scope.backmsg = 'Post Failed';
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
@@ -570,7 +600,7 @@ app.controller("myCtrlFav", function($scope, $http){
 
             }
 
-            $scope.books.splice(b,1);
+
 
         }
 
