@@ -65,13 +65,13 @@ def addOne():
             cur.execute(add_book,data_word)
 
             db.commit()
-            return jsonify({'status':'Saved'})
+            return jsonify({'status':'Saved','check':'true'})
 
-        return jsonify({'status':'This book already exists'})
+        return jsonify({'status':'This book already exists','check':'none'})
 
     except:
 
-        return jsonify({'status':'Cant Saved'})
+        return jsonify({'status':'Cant Saved','check':'false'})
 
 @app.route('/jsondatas',methods=['GET'])
 def takeAll():
@@ -101,9 +101,9 @@ def sendtoread():
         cur.execute(query,datas)
         db.commit()
 
-        return jsonify({'status':'Book send to read.'})
+        return jsonify({'status':'Book send to read.','check':'true'})
     except:
-        return jsonify({'status':'Book cant send to read.'})
+        return jsonify({'status':'Book cant send to read.','check':'false'})
 
 @app.route('/sendtofav', methods=['POST'])
 def sendtofav():
@@ -120,11 +120,11 @@ def sendtofav():
             cur.execute(query,datas)
             db.commit()
 
-            return jsonify({'status':'Book add to favorite.'})
+            return jsonify({'status':'Book add to favorite.','check':'true'})
 
-        return jsonify({'status':'Book already into favorite.'})
+        return jsonify({'status':'Book already into favorite.','check':'none'})
     except:
-        return jsonify({'status':'Book cant add to favorite.'})
+        return jsonify({'status':'Book cant add to favorite.','check':'false'})
 
 
 @app.route('/removefav', methods=['POST'])
@@ -140,9 +140,9 @@ def removefav():
         cur.execute(query,datas)
         db.commit()
 
-        return jsonify({'status':'Book remove from favorite.'})
+        return jsonify({'status':'Book remove from favorite.','check':'true'})
     except:
-        return jsonify({'status':'Book cant remove from favorite.'})
+        return jsonify({'status':'Book cant remove from favorite.','check':'false'})
 
 @app.route('/deletebook', methods=['POST'])
 def deletebook():
@@ -152,11 +152,11 @@ def deletebook():
         b=json.loads(request.data)
         datas=(b['name'],b['year'])
 
-        cu.execute(query,datas)
+        cur.execute(query,datas)
         db.commit()
 
 
-        return jsonify({'status':'Book deleted.','check':'false'})
+        return jsonify({'status':'Book deleted.','check':'true'})
     except:
         return jsonify({'status':'Book cant deleted','check':'false'})
 
