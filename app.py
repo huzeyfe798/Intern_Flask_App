@@ -1,4 +1,7 @@
 import mysql.connector
+import urllib
+import urllib2
+import hashlib
 
 from flask import Flask,render_template,request,jsonify,json
 app = Flask(__name__)
@@ -43,34 +46,45 @@ def addOne():
         read=request.json['read']
         favorite=request.json['favorite']
         toberead=request.json['toberead']
+        try:
+            ret=urllib2.urlopen(imageURL)
+            if ret.code == 200:
 
-        search_book=(" SELECT *  FROM book_list"
-                     "   WHERE `bookname`=%s AND `year`=%s")
-        data_word1=(str(bookname),str(year))
+                new_url = "static/img/"+hashlib.sha256(bookname+year).hexdigest()+".jpg"
+                f = open(new_url,'wb')
+                f.write(urllib.urlopen(imageURL).read())
+                f.close
 
-        cur.execute(search_book,data_word1)
+                search_book=(" SELECT *  FROM book_list"
+                             "   WHERE `bookname`=%s AND `year`=%s")
+                data_word1=(str(bookname),str(year))
 
-        a=cur.fetchall()
+                cur.execute(search_book,data_word1)
 
-        if (len(a) == 0):
+                a=cur.fetchall()
+
+                if (len(a) == 0):
 
 
 
-            add_book = ("INSERT INTO book_list "
-                        "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
-                        " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+                    add_book = ("INSERT INTO book_list "
+                                "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
+                                " VALUES (%s,%s,%s, %s, %s, %s, %s)")
 
-            data_word = (str(bookname),str(authorname),str(year),str(imageURL),str(read),str(favorite),str(toberead))
+                    data_word = (str(bookname),str(authorname),str(year),str(new_url),str(read),str(favorite),str(toberead))
 
-            cur.execute(add_book,data_word)
+                    cur.execute(add_book,data_word)
 
-            db.commit()
-            return jsonify({'status':'Saved','check':'true'})
+                    db.commit()
+                    return jsonify({'status':'Saved','check':'true'})
 
-        return jsonify({'status':'This book already exists','check':'none'})
+                return jsonify({'status':'This book already exists','check':'none'})
+
+            return jsonify({'status':'This book already exists','check':'exist'})
+        except:
+            return jsonify({'status':'This book already exists','check':'exist'})
 
     except:
-
         return jsonify({'status':'Cant Saved','check':'false'})
 
 @app.route('/jsondatas',methods=['GET'])

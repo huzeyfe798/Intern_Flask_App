@@ -9,6 +9,7 @@ app.controller("myCtrl", function($scope, $http){
 
     $scope.change1 = function () {
         $http.post("/post",{'imageURL':$scope.imageURL,'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
+
         function successCallback(resp){
             $scope.backmsg = resp.data['status'];
             var control=resp.data['check'];
@@ -60,6 +61,30 @@ app.controller("myCtrl", function($scope, $http){
                     }
 
                 });
+            }else if(control == 'exist'){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: 'Image url not exist check your image url'
+                },{
+                    // settings
+                    type: 'warning',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
             }else{
                 $.notify({
                     // options
@@ -87,7 +112,7 @@ app.controller("myCtrl", function($scope, $http){
             }
 
 
-        }3
+        }
         function errorCallback(){
             $scope.backmsg = 'Post Failed';
             $.notify({
