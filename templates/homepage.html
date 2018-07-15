@@ -43,7 +43,7 @@
         <div class="col-md-4">
             <div class="bookbox">
                 <div id="search-box">
-                    <h3 class="text-center">Search For Books</h3>
+                    <h3 class="text-center"><strong>Search For Books</strong> </h3>
                     <input type="text" class="mid" placeholder="Title" ng-model="query"/>
                     <br/>
                     <p class="text-center"><a class="btn btn-success transition" ng-click="searchBooks()">Search</a> </p>
@@ -60,7 +60,7 @@
 
             <div class="bookbox">
                 <div id="result-box">
-                    <h3 class="text-center">Results</h3>
+                    <h3 class="text-center"><strong>Results</strong></h3>
                     <p class="text-center" id="query"></p>
                     <hr/>
                     <ul id="results-list">
@@ -90,7 +90,7 @@
         <div class="col-md-8">
             <div class="bookbox">
                 <div id="books-box">
-                    <h3 class="text-center">Books</h3>
+                    <h3 class="text-center"><strong>Books</strong></h3>
                     <p class="text-center">//books.length//</p>
                     <hr/>
                     <ul id="mybooks-list">
@@ -105,7 +105,15 @@
                                             //book[0]//
                                         </strong>
                                     </h4>
-                                    <p class="text-left"><a class="btn btn-danger transition" ng-click="deleteBook(book)">Remove</a></p>
+                                    <strong>Favorite:</strong>
+                                    <input type="checkbox" ng-model="book[5]"ng-init="book[5]=false" ng-disabled="tobeVal">
+                                    <strong>Read:</strong>
+                                    <input ng-checked="true" type="checkbox" ng-model="book[4]"ng-init="book[4]=true" ng-disabled="tobeVal">
+                                    <strong>To Be Read:</strong>
+                                    <input type="checkbox" ng-model="book[6]"ng-init="book[6]=false" ng-disabled="favoVal || readVal">
+                                    <button type="submit" class="btn btn-success col-lg-pull-6" ng-click="change1(book)">Save</button>
+                                    <button type="submit" class="btn btn-danger col-lg-pull-6" ng-click="deleteBook(book)">Remove</button>
+                                    <hr/>
                                 </div>
                             </div>
                         </li>

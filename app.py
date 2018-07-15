@@ -102,6 +102,23 @@ def takeAll():
     except:
         return jsonify({'status':'Database Connection Error'})
 
+@app.route('/sendtochange', methods=['POST'])
+def sendtochange():
+    try:
+        query = (" UPDATE book_list"
+                 "  SET `read`=%s,`toberead`=%s,`favorite`=%s"
+                 "WHERE `bookname`=%s AND `year`=%s")
+        b=json.loads(request.data)
+
+        datas=(str(b['read']),str(b['toberead']),str(b['favorite']),str(b['name']),str(b['year']))
+
+        cur.execute(query,datas)
+        db.commit()
+
+        return jsonify({'status':'Book changes saved.','check':'true'})
+    except:
+        return jsonify({'status':'Book changes cant saved.','check':'false'})
+
 
 @app.route('/sendtoread', methods=['POST'])
 def sendtoread():
