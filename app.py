@@ -251,7 +251,7 @@ def deletebook():
             books1.append(a)
 
 
-        if len(books1) > 0:
+        if books1[0][0] != '':
             os.remove(books1[0][0])
 
         cur.execute(query,datas)
