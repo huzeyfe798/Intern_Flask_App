@@ -234,7 +234,7 @@ def removefav():
 
 @app.route('/deletebook', methods=['POST'])
 def deletebook():
-    # try:
+    try:
         query1=(" SELECT imageURL  FROM book_list"
                     "   WHERE `bookname`=%s AND `year`=%s")
         query = (" DELETE  FROM book_list"
@@ -259,8 +259,8 @@ def deletebook():
 
 
         return jsonify({'status':'Book deleted.','check':'true'})
-    # except:
-    #     return jsonify({'status':'Book cant deleted','check':'false'})
+    except:
+        return jsonify({'status':'Book cant deleted','check':'false'})
 
 
 
