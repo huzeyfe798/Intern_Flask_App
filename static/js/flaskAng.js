@@ -8,7 +8,8 @@ app.config(function($interpolateProvider) {
 app.controller("myCtrl", function($scope, $http){
 
     $scope.change1 = function () {
-        $http.post("/post",{'imageURL':$scope.imageURL,'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
+        $http.post("/post",{'imageURL':$scope.imageURL,'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,
+            'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
 
         function successCallback(resp){
             $scope.backmsg = resp.data['status'];
@@ -186,101 +187,7 @@ app.controller("myCtrlFav", function($scope, $http){
 
     }
 
-    // $scope.change1 = function(book){
-    //
-    //     console.log(book[4])
-    //     console.log(book[5])
-    //     console.log(book[6])
-    //
-    //     var databook = {
-    //         name : book[0], year : book[2] , read : book[4] , favorite : book[5] , toberead : book[6]
-    //     };
-    //
-    //
-    //     $http.post("/sendtochange",databook).then(successCallback, errorCallback);
-    //     function successCallback(resp){
-    //         $scope.backmsg = resp.data['status'];
-    //         var control=resp.data['check'];
-    //         if(control == 'true'){
-    //             $.notify({
-    //                 // options
-    //                 icon: 'glyphicon glyphicon-warning-sign',
-    //                 message: $scope.backmsg
-    //             },{
-    //                 // settings
-    //                 type: 'success',
-    //                 allow_dismiss: true,
-    //                 placement: {
-    //                     from: "bottom",
-    //                     align: "center"
-    //                 },
-    //                 offset: 20,
-    //                 spacing: 10,
-    //                 z_index: 1031,
-    //                 delay: 5000,
-    //                 timer: 1000,
-    //                 animate: {
-    //                     enter: 'animated fadeInUp',
-    //                     exit: 'animated fadeOutDown'
-    //                 }
-    //
-    //             });
-    //         }else{
-    //             $.notify({
-    //                 // options
-    //                 icon: 'glyphicon glyphicon-warning-sign',
-    //                 message: $scope.backmsg
-    //             },{
-    //                 // settings
-    //                 type: 'danger',
-    //                 allow_dismiss: true,
-    //                 placement: {
-    //                     from: "bottom",
-    //                     align: "center"
-    //                 },
-    //                 offset: 20,
-    //                 spacing: 10,
-    //                 z_index: 1031,
-    //                 delay: 5000,
-    //                 timer: 1000,
-    //                 animate: {
-    //                     enter: 'animated fadeInUp',
-    //                     exit: 'animated fadeOutDown'
-    //                 }
-    //
-    //             });
-    //         }
-    //
-    //
-    //     }
-    //     function errorCallback(){
-    //         $scope.backmsg = 'Post Failed';
-    //         $.notify({
-    //             // options
-    //             icon: 'glyphicon glyphicon-warning-sign',
-    //             message: $scope.backmsg
-    //         },{
-    //             // settings
-    //             type: 'danger',
-    //             allow_dismiss: true,
-    //             placement: {
-    //                 from: "bottom",
-    //                 align: "center"
-    //             },
-    //             offset: 20,
-    //             spacing: 10,
-    //             z_index: 1031,
-    //             delay: 5000,
-    //             timer: 1000,
-    //             animate: {
-    //                 enter: 'animated fadeInUp',
-    //                 exit: 'animated fadeOutDown'
-    //             }
-    //
-    //         });
-    //
-    //     }
-    // }
+
 
     $scope.filterBe = function(item){
         return (item[6] == "True" || item[6] == "true");
