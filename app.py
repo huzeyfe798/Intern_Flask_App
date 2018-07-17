@@ -1,7 +1,11 @@
+#!/usr/local/bin/python
+import os, sys
+
 import mysql.connector
 import urllib
 import urllib2
 import hashlib
+
 
 from flask import Flask,render_template,request,jsonify,json
 app = Flask(__name__)
@@ -46,18 +50,12 @@ def addOne():
         read=request.json['read']
         favorite=request.json['favorite']
         toberead=request.json['toberead']
+        a = bookname+year
         try:
-            ret=urllib2.urlopen(imageURL)
-            if ret.code == 200:
-
-                new_url = "static/img/"+hashlib.sha256(bookname+year).hexdigest()+".jpg"
-                f = open(new_url,'wb')
-                f.write(urllib.urlopen(imageURL).read())
-                f.close
-
+            if imageURL == '':
                 search_book=(" SELECT *  FROM book_list"
                              "   WHERE `bookname`=%s AND `year`=%s")
-                data_word1=(str(bookname),str(year))
+                data_word1=(str(bookname.encode('utf-8')),str(year))
 
                 cur.execute(search_book,data_word1)
 
@@ -71,7 +69,7 @@ def addOne():
                                 "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
                                 " VALUES (%s,%s,%s, %s, %s, %s, %s)")
 
-                    data_word = (str(bookname),str(authorname),str(year),str(new_url),str(read),str(favorite),str(toberead))
+                    data_word = (str(bookname.encode('utf-8')),str(authorname.encode('utf-8')),str(year),str(imageURL),str(read),str(favorite),str(toberead))
 
                     cur.execute(add_book,data_word)
 
@@ -79,9 +77,43 @@ def addOne():
                     return jsonify({'status':'Saved','check':'true'})
 
                 return jsonify({'status':'This book already exists','check':'none'})
+            else:
+                ret=urllib2.urlopen(imageURL)
+                if ret.code == 200:
 
-            return jsonify({'status':'This book already exists','check':'exist'})
+                    new_url = "static/img/"+hashlib.sha256(a.encode('utf-8')).hexdigest()+".jpg"
+                    f = open(new_url,'wb')
+                    f.write(urllib.urlopen(imageURL).read())
+                    f.close
+
+                    search_book=(" SELECT *  FROM book_list"
+                                 "   WHERE `bookname`=%s AND `year`=%s")
+                    data_word1=(str(bookname.encode('utf-8')),str(year))
+
+                    cur.execute(search_book,data_word1)
+
+                    a=cur.fetchall()
+
+                    if (len(a) == 0):
+
+
+
+                        add_book = ("INSERT INTO book_list "
+                                    "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
+                                    " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+
+                        data_word = (str(bookname.encode('utf-8')),str(authorname.encode('utf-8')),str(year),str(new_url),str(read),str(favorite),str(toberead))
+
+                        cur.execute(add_book,data_word)
+
+                        db.commit()
+                        return jsonify({'status':'Saved','check':'true'})
+
+                    return jsonify({'status':'This book already exists','check':'none'})
+
+                return jsonify({'status':'This book already exists','check':'exist'})
         except:
+            print "agir fail"
             return jsonify({'status':'This book already exists','check':'exist'})
 
     except:
@@ -203,10 +235,24 @@ def removefav():
 @app.route('/deletebook', methods=['POST'])
 def deletebook():
     try:
+        query1=(" SELECT imageURL  FROM book_list"
+                    "   WHERE `bookname`=%s AND `year`=%s")
         query = (" DELETE  FROM book_list"
                  "   WHERE `bookname`=%s AND `year`=%s")
+
+
         b=json.loads(request.data)
         datas=(b['name'],b['year'])
+        cur.execute(query1,datas)
+
+        books1=[];
+
+        for a in cur:
+            books1.append(a)
+
+
+        if os.path.exists(books1[0][0]):
+            os.remove(books1[0][0])
 
         cur.execute(query,datas)
         db.commit()
