@@ -234,19 +234,33 @@ def removefav():
 
 @app.route('/deletebook', methods=['POST'])
 def deletebook():
-    try:
+    # try:
+        query1=(" SELECT imageURL  FROM book_list"
+                    "   WHERE `bookname`=%s AND `year`=%s")
         query = (" DELETE  FROM book_list"
                  "   WHERE `bookname`=%s AND `year`=%s")
+
+
         b=json.loads(request.data)
         datas=(b['name'],b['year'])
+        cur.execute(query1,datas)
+
+        books1=[];
+
+        for a in cur:
+            books1.append(a)
+
+
+        if len(books1) > 0:
+            os.remove(books1[0][0])
 
         cur.execute(query,datas)
         db.commit()
 
 
         return jsonify({'status':'Book deleted.','check':'true'})
-    except:
-        return jsonify({'status':'Book cant deleted','check':'false'})
+    # except:
+    #     return jsonify({'status':'Book cant deleted','check':'false'})
 
 
 
