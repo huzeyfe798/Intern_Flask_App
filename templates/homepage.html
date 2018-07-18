@@ -69,7 +69,7 @@
                                 <div class="col-md-4">
                                     <img class="book-img" ng-show="controlbook" ng-src="//book[2]//">
                                     <img class="book-img" ng-show="controlapi" ng-src="//book.volumeInfo.imageLinks.thumbnail//">
-                                </div>
+                                </div>3
                                 <div class="col-md-8">
                                     <h4 ng-show="controlbook">
                                         <strong>
@@ -113,14 +113,6 @@
                                             //book[0]//
                                         </strong>
                                     </h4>
-                                    <!--<strong>Favorite:</strong>-->
-                                    <!--<input type="checkbox" ng-model="book[5]"ng-init="book[5]=false" ng-disabled="tobeVal">-->
-                                    <!--<strong>Read:</strong>-->
-                                    <!--<input ng-checked="true" type="checkbox" ng-model="book[4]"ng-init="book[4]=true" ng-disabled="tobeVal">-->
-                                    <!--<strong>To Be Read:</strong>-->
-                                    <!--<input type="checkbox" ng-model="book[6]"ng-init="book[6]=false" ng-disabled="favoVal || readVal">-->
-
-                                    <!--<button type="submit" class="btn btn-success col-lg-pull-6" ng-click="change1(book)">Save</button>-->
                                     <button type="submit" class="btn btn-primary col-lg-pull-6" ng-click="sendtoread(book)">Send to Read</button>
                                     <button type="submit" class="btn btn-info col-lg-pull-6" ng-click="sendtofav(book)">Add to Favorite</button>
                                     <button type="submit" class="btn btn-success col-lg-pull-6" ng-click="sendtoberead(book)">Send to be Read </button>
