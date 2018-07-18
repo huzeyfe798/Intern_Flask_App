@@ -214,45 +214,90 @@ app.controller("myCtrlFav", function($scope, $http){
             $("#loading-box").show();
 
 
-            for(x in $scope.books){
 
-                if($scope.query == $scope.books[x][0]){
-                  contr = true;
+            $http.post("/postsearch",{'name': $scope.query}).then(successcall, errorcall);
+            function successcall(resp){
+
+
+
+                if(resp.data.length > 0){
+                    contr = true;
+                    $scope.controlbook = true;
+                    $scope.controlapi = false;
+                    $scope.result_books = resp.data;
+                    $("#msg").text("");
+
+
+                }else{
+
+                    if(!contr){
+                        console.log('naptın')
+                        $scope.controlbook = false;
+                        $scope.controlapi = true;
+                        var request = req_prefix + $scope.query;
+
+                        $http.get(request).then(successCallback, errorCallback);
+
+                        function successCallback(resp){
+                            if(resp.data.items && resp.data.items.length > 0){
+                                $scope.result_books = resp.data.items;
+                                $("#msg").text("");
+                            }
+                            else{
+                                $("#msg").text("No Results");
+                            }
+
+                            $("#search-box").show();
+                            $("#loading-box").hide();
+
+                        }
+                        function errorCallback(){
+                            console.log("Error");
+                            $("#search-box").show();
+                            $("#loading-box").hide();
+                        }
+
+
+                    }
+
                 }
-            }
-            if(contr){
-                $scope.filterData = function(item){
-                    return item[0] == $scope.query;
-                }
+
+
                 $("#search-box").show();
                 $("#loading-box").hide();
-            }
-            else{
-                var request = req_prefix + $scope.query;
 
-                $http.get(request).then(successCallback, errorCallback);
 
-                function successCallback(resp){
-                    if(resp.data.items && resp.data.items.length > 0){
-                        $scope.result_books = resp.data.items;
-                        $("#msg").text("");
-                    }
-                    else{
-                        $("#msg").text("No Results");
-                    }
-
-                    $("#search-box").show();
-                    $("#loading-box").hide();
-
-                }
-                function errorCallback(){
-                    console.log("Error");
-                    $("#search-box").show();
-                    $("#loading-box").hide();
-                }
 
 
             }
+            function errorcall(){
+                $scope.backmsg = 'Post Failed';
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+            }
+
+
         }
 
 

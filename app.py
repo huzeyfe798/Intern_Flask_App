@@ -156,19 +156,44 @@ def takeAll():
 #         return jsonify({'status':'Book changes saved.','check':'true'})
 #     except:
 #         return jsonify({'status':'Book changes cant saved.','check':'false'})
+@app.route('/postsearch', methods=['POST'])
+def postsearch():
+     try:
+        book= json.loads(request.data)
 
+
+
+
+
+        query = (" SELECT bookname,authorname,imageURL,`year` FROM book_list"
+                "   WHERE bookname=%s")
+        datas =(book['name'],)
+
+        cur.execute(query,datas)
+
+        books1 = [];
+
+        for a in cur:
+            books1.append(a)
+
+
+
+        return jsonify(books1)
+
+     except:
+        return jsonify({'status': 'Book send to read.', 'check': 'true'})
 
 @app.route('/sendtoread', methods=['POST'])
 def sendtoread():
     try:
-        b = json.loads(request.data)
-        if b['read'] == 'true':
+        book = json.loads(request.data)
+        if book['read'] == 'true':
             return jsonify({'status': 'Book already exist in read.', 'check': 'none'})
         query = (" UPDATE book_list"
                  "  SET `read`='true',`toberead`='false'"
                  "WHERE `bookname`=%s AND `year`=%s")
 
-        datas = (b['name'], b['year'])
+        datas = (book['name'], book['year'])
 
         cur.execute(query, datas)
         db.commit()

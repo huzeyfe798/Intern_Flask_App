@@ -67,17 +67,25 @@
                         <li ng-repeat="book in result_books">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <img class="book-img" ng-src="//book.volumeInfo.imageLinks.thumbnail//">
+                                    <img class="book-img" ng-show="controlbook" ng-src="//book[2]//">
+                                    <img class="book-img" ng-show="controlapi" ng-src="//book.volumeInfo.imageLinks.thumbnail//">
                                 </div>
                                 <div class="col-md-8">
-                                    <h4>
+                                    <h4 ng-show="controlbook">
+                                        <strong>
+                                            //book[0]//
+                                        </strong>
+                                    </h4>
+                                    <h4 ng-show="controlapi">
                                         <strong>
                                             //book.volumeInfo.title//
                                         </strong>
                                     </h4>
-                                    <p><strong>By</strong>: <em>//book.volumeInfo.authors[0]//</em></p>
-                                    <p><strong>Published</strong>: //book.volumeInfo.publishedDate//</p>
-                                    <p class="text-left"><a class="btn btn-success transition" ng-click="addBook(this.book)">Add To Be Read</a></p>
+                                    <p ng-show="controlbook"><strong>By</strong>: <em>//book[1]//</em></p>
+                                    <p ng-show="controlapi"><strong>By</strong>: <em>//book.volumeInfo.authors[0]//</em></p>
+                                    <p ng-show="controlbook"><strong>Published</strong>: //book[3]//</p>
+                                    <p ng-show="controlapi"><strong>Published</strong>: //book.volumeInfo.publishedDate//</p>
+                                    <p ng-show="controlapi" class="text-left"><a class="btn btn-success transition" ng-click="addBook(this.book)">Add To Be Read</a></p>
                                 </div>
                             </div>
                         </li>
