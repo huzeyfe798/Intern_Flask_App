@@ -1,9 +1,10 @@
 var app = angular.module("myApp",[]);
 
 app.config(function($interpolateProvider) {
-    $interpolateProvider.startSymbol('//').endSymbol('//');
-});
 
+    $interpolateProvider.startSymbol('//').endSymbol('//');
+
+});
 
 app.controller("myCtrl", function($scope, $http){
 
@@ -14,7 +15,7 @@ app.controller("myCtrl", function($scope, $http){
         function successCallback(resp){
             $scope.backmsg = resp.data['status'];
             var control=resp.data['check'];
-            if(control == 'true'){
+            if(control){
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
@@ -38,55 +39,7 @@ app.controller("myCtrl", function($scope, $http){
                     }
 
                 });
-            }else if(control == 'none'){
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-warning-sign',
-                    message: $scope.backmsg
-                },{
-                    // settings
-                    type: 'warning',
-                    allow_dismiss: true,
-                    placement: {
-                        from: "bottom",
-                        align: "center"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    animate: {
-                        enter: 'animated fadeInUp',
-                        exit: 'animated fadeOutDown'
-                    }
-
-                });
-            }else if(control == 'exist'){
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-warning-sign',
-                    message: 'Image url not exist check your image url'
-                },{
-                    // settings
-                    type: 'warning',
-                    allow_dismiss: true,
-                    placement: {
-                        from: "bottom",
-                        align: "center"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    animate: {
-                        enter: 'animated fadeInUp',
-                        exit: 'animated fadeOutDown'
-                    }
-
-                });
-            }else{
+            }else {
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
@@ -143,131 +96,237 @@ app.controller("myCtrl", function($scope, $http){
         }
 
     };
+
 });
 
 
 app.controller("myCtrlFav", function($scope, $http){
         var req_prefix = "https://www.googleapis.com/books/v1/volumes?q=";
 
-
         $scope.result_books = [];
-
 
     $http.get('/jsondatas').then(successCallback, errorCallback);
 
     function successCallback(datas){
-        $scope.books = datas.data;
+        $scope.books = datas.data[1];
+        $scope.backmsg = datas.data[0]['status'];
+        var control = datas.data[0]['check']
+
+        if(control){
+          $.notify({
+              // options
+              icon: 'glyphicon glyphicon-warning-sign',
+              message: $scope.backmsg
+          },{
+              // settings
+              type: 'success',
+              allow_dismiss: true,
+              placement: {
+                  from: "bottom",
+                  align: "center"
+              },
+              offset: 20,
+              spacing: 10,
+              z_index: 1031,
+              delay: 5000,
+              timer: 1000,
+              animate: {
+                  enter: 'animated fadeInUp',
+                  exit: 'animated fadeOutDown'
+              }
+
+          });
+        }else{
+          $.notify({
+              // options
+              icon: 'glyphicon glyphicon-warning-sign',
+              message: $scope.backmsg
+          },{
+              // settings
+              type: 'danger',
+              allow_dismiss: true,
+              placement: {
+                  from: "bottom",
+                  align: "center"
+              },
+              offset: 20,
+              spacing: 10,
+              z_index: 1031,
+              delay: 5000,
+              timer: 1000,
+              animate: {
+                  enter: 'animated fadeInUp',
+                  exit: 'animated fadeOutDown'
+              }
+
+          });
+        }
+
+
     }
-    function errorCallback(resp){
-        $scope.backmsg = resp.data['status'];
-        $.notify({
-            // options
-            icon: 'glyphicon glyphicon-warning-sign',
-            message: $scope.backmsg
-        },{
-            // settings
-            type: 'danger',
-            allow_dismiss: true,
-            placement: {
-                from: "bottom",
-                align: "center"
-            },
-            offset: 20,
-            spacing: 10,
-            z_index: 1031,
-            delay: 5000,
-            timer: 1000,
-            animate: {
-                enter: 'animated fadeInUp',
-                exit: 'animated fadeOutDown'
-            }
 
-        });
+    function errorCallback(){
+      $scope.backmsg = 'Get Failed';
+      $.notify({
+          // options
+          icon: 'glyphicon glyphicon-warning-sign',
+          message: $scope.backmsg
+      },{
+          // settings
+          type: 'danger',
+          allow_dismiss: true,
+          placement: {
+              from: "bottom",
+              align: "center"
+          },
+          offset: 20,
+          spacing: 10,
+          z_index: 1031,
+          delay: 5000,
+          timer: 1000,
+          animate: {
+              enter: 'animated fadeInUp',
+              exit: 'animated fadeOutDown'
+          }
+
+      });
 
 
     }
 
-
-
-    $scope.filterBe = function(item){
+    $scope.filtertoBeRead = function(item){
         return (item[6] == "True" || item[6] == "true");
     }
-    $scope.filterFav = function(item){
+
+    $scope.filterFavorite = function(item){
         return (item[5] == "True" || item[5] == "true");
     }
-    $scope.filterRe = function(item){
+
+    $scope.filterRead = function(item){
 
         return (item[4] == "True" || item[4] == "true");
     }
 
-
-
     $scope.searchBooks = function(){
 
-            var contr = false;
             if($scope.query == "" || $scope.query == undefined) {
-
                 return;
             }
 
             $("#search-box").hide();
             $("#loading-box").show();
 
-
-
             $http.post("/postsearch",{'name': $scope.query}).then(successcall, errorcall);
             function successcall(resp){
 
-
-
-                if(resp.data.length > 0){
-                    contr = true;
+                if(resp.data[0]['check']){
+                    console.log("neregirdinbor");
                     $scope.controlbook = true;
                     $scope.controlapi = false;
-                    $scope.result_books = resp.data;
+                    $scope.result_books = resp.data[1];
+                    $scope.backmsg = resp.data[0]['status'];
                     $("#msg").text("");
 
+                    $.notify({
+                        // options
+                        icon: 'glyphicon glyphicon-warning-sign',
+                        message: $scope.backmsg
+                    },{
+                        // settings
+                        type: 'success',
+                        allow_dismiss: true,
+                        placement: {
+                            from: "bottom",
+                            align: "center"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: 5000,
+                        timer: 1000,
+                        animate: {
+                            enter: 'animated fadeInUp',
+                            exit: 'animated fadeOutDown'
+                        }
+
+                    });
 
                 }else{
 
-                    if(!contr){
-                        console.log('naptın')
-                        $scope.controlbook = false;
-                        $scope.controlapi = true;
-                        var request = req_prefix + $scope.query;
+                    $scope.controlbook = false;
+                    $scope.controlapi = true;
+                    var request = req_prefix + $scope.query;
 
-                        $http.get(request).then(successCallback, errorCallback);
+                    $http.get(request).then(successCallback, errorCallback);
 
-                        function successCallback(resp){
-                            if(resp.data.items && resp.data.items.length > 0){
-                                $scope.result_books = resp.data.items;
-                                $("#msg").text("");
-                            }
-                            else{
-                                $("#msg").text("No Results");
-                            }
+                    function successCallback(resp){
+                        if(resp.data.items && resp.data.items.length > 0){
 
-                            $("#search-box").show();
-                            $("#loading-box").hide();
+                            $scope.result_books = resp.data.items;
+                            $("#msg").text("");
 
                         }
-                        function errorCallback(){
-                            console.log("Error");
-                            $("#search-box").show();
-                            $("#loading-box").hide();
+                        else{
+                            $("#msg").text("No Results");
                         }
-
 
                     }
+                    function errorCallback(){
+                      $scope.backmsg = 'Google book api cant work';
+                      $.notify({
+                          // options
+                          icon: 'glyphicon glyphicon-warning-sign',
+                          message: $scope.backmsg
+                      },{
+                          // settings
+                          type: 'danger',
+                          allow_dismiss: true,
+                          placement: {
+                              from: "bottom",
+                              align: "center"
+                          },
+                          offset: 20,
+                          spacing: 10,
+                          z_index: 1031,
+                          delay: 5000,
+                          timer: 1000,
+                          animate: {
+                              enter: 'animated fadeInUp',
+                              exit: 'animated fadeOutDown'
+                          }
+
+                      });
+                    }
+
+                    $scope.backmsg = resp.data[0]['status'];
+                    $.notify({
+                          // options
+                          icon: 'glyphicon glyphicon-warning-sign',
+                          message: $scope.backmsg
+                      },{
+                          // settings
+                          type: 'warning',
+                          allow_dismiss: true,
+                          placement: {
+                              from: "bottom",
+                              align: "center"
+                          },
+                          offset: 20,
+                          spacing: 10,
+                          z_index: 1031,
+                          delay: 5000,
+                          timer: 1000,
+                          animate: {
+                              enter: 'animated fadeInUp',
+                              exit: 'animated fadeOutDown'
+                          }
+
+                      });
 
                 }
 
-
                 $("#search-box").show();
                 $("#loading-box").hide();
-
-
-
 
             }
             function errorcall(){
@@ -300,434 +359,251 @@ app.controller("myCtrlFav", function($scope, $http){
 
         }
 
-
-        $scope.clearResults = function() {
-            $scope.result_books = [];
-            $scope.filterData = function(){
-                return true;
-            }
-            $scope.query = '';
-            $("#query").text( "" );
+    $scope.clearResults = function() {
+        $scope.result_books = [];
+        $scope.filterData = function(){
+            return true;
         }
+        $scope.query = '';
+        $("#query").text( "" );
+    }
 
-        $scope.addBook = function(b){
+    $scope.addBook = function(book){
 
-            var create = {};
-            var createfake = {};
-            if(b.volumeInfo.hasOwnProperty('imageLinks')){
-                create['imageURL']= b.volumeInfo.imageLinks.thumbnail;
-                createfake[3]= b.volumeInfo.imageLinks.thumbnail;
-            }else{
-                create['imageURL']= "";
-                createfake[3]= "";
-            }
-            if(b.volumeInfo.hasOwnProperty('title')){
-                create['bookname']= b.volumeInfo.title;
-                createfake[0]= b.volumeInfo.title;
-            }else{
-                create['bookname']= "";
-                createfake[0]= "";
-            }
-            if(b.volumeInfo.hasOwnProperty('authors')){
-                create['authorname']= b.volumeInfo.authors[0];
-                createfake[1]= b.volumeInfo.authors[0];
-            }else{
-                create['authorname']= "";
-                createfake[1]= "";
-            }
-            if(b.volumeInfo.hasOwnProperty('publishedDate')){
-                create['year']= b.volumeInfo.publishedDate;
-                createfake[2]= b.volumeInfo.publishedDate;
-            }else{
-                create['year']= "";
-                createfake[2]= "";
-            }
-            create['read']= "false";
-            createfake[4]= "false";
-            create['favorite']= "false";
-            createfake[5]= "false";
-            create['toberead']= "true";
-            createfake[6]= "true";
-
-
-            $http.post("/post",create ).then(successCallback, errorCallback);
-            function successCallback(resp){
-                $scope.backmsg = resp.data['status'];
-                var control=resp.data['check'];
-                if(control == 'true'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'success',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                    $scope.books.push(createfake);
-                }else if(control == 'none'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'warning',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }else{
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'danger',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }
-
-
-            }
-            function errorCallback(){
-                $scope.backmsg = 'Post Failed';
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-warning-sign',
-                    message: $scope.backmsg
-                },{
-                    // settings
-                    type: 'danger',
-                    allow_dismiss: true,
-                    placement: {
-                        from: "bottom",
-                        align: "center"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    animate: {
-                        enter: 'animated fadeInUp',
-                        exit: 'animated fadeOutDown'
-                    }
-
-                });
-
-            }
-
-
-
+        var createbooklist = {};
+        var createfakebooklist = {};
+        if(book.volumeInfo.hasOwnProperty('imageLinks')){
+            createbooklist['imageURL']= book.volumeInfo.imageLinks.thumbnail;
+            createfakebooklist[3]= book.volumeInfo.imageLinks.thumbnail;
+        }else{
+            createbooklist['imageURL']= "";
+            createfakebooklist[3]= "";
         }
-
-
-
-3
-
-
-        $scope.showBook = function(book) {
-            $scope.current_book = book;
-            $("#myModal").modal("show");
+        if(book.volumeInfo.hasOwnProperty('title')){
+            createbooklist['bookname']= book.volumeInfo.title;
+            createfakebooklist[0]= book.volumeInfo.title;
+        }else{
+            createbooklist['bookname']= "";
+            createfakebooklist[0]= "";
         }
-
-        $scope.sendtoread = function (a){
-
-            var b = $scope.books.indexOf(a);
-
-
-
-            var databook = {
-                name : $scope.books[b][0], year : $scope.books[b][2],read : $scope.books[b][4]
-            };
-
-
-            $http.post("/sendtoread",databook).then(successCallback, errorCallback);
-            function successCallback(resp){
-                $scope.backmsg = resp.data['status'];
-                var control=resp.data['check'];
-                if(control == 'true'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'success',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                    $scope.books[b][6] = false;
-                    $scope.books[b][4] = true;3
-                }else if(control == 'none'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'warning',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }else {
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'danger',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }
-
-
-            }
-            function errorCallback(){
-                $scope.backmsg = 'Post Failed';
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-warning-sign',
-                    message: $scope.backmsg
-                },{
-                    // settings
-                    type: 'danger',
-                    allow_dismiss: true,
-                    placement: {
-                        from: "bottom",
-                        align: "center"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    animate: {
-                        enter: 'animated fadeInUp',
-                        exit: 'animated fadeOutDown'
-                    }
-
-                });
-
-            }
-
+        if(book.volumeInfo.hasOwnProperty('authors')){
+            createbooklist['authorname']= book.volumeInfo.authors[0];
+            createfakebooklist[1]= book.volumeInfo.authors[0];
+        }else{
+            createbooklist['authorname']= "";
+            createfakebooklist[1]= "";
         }
-        $scope.sendtofav = function (a){
-
-            var b = $scope.books.indexOf(a);
-
-            var databook = {
-                name : $scope.books[b][0], year : $scope.books[b][2],fav:$scope.books[b][5]
-            };
-
-
-            $http.post("/sendtofav",databook).then(successCallback, errorCallback);
-            function successCallback(resp){
-                $scope.backmsg = resp.data['status'];
-                var control=resp.data['check'];
-                if(control == 'true'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings3
-                        type: 'success',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                    $scope.books[b][5] = true;
-                }else if(control == 'none'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings3
-                        type: 'warning',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }else{
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings3
-                        type: 'danger',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }
-
-
-            }
-            function errorCallback(){
-                $scope.backmsg = 'Post failed.';
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-warning-sign',
-                    message: $scope.backmsg
-                },{
-                    // settings
-                    type: 'danger',
-                    allow_dismiss: true,
-                    placement: {
-                        from: "bottom",
-                        align: "center"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    animate: {
-                        enter: 'animated fadeInUp',
-                        exit: 'animated fadeOutDown'
-                    }
-
-                });
-
-            }
-
+        if(book.volumeInfo.hasOwnProperty('publishedDate')){
+            createbooklist['year']= book.volumeInfo.publishedDate;
+            createfakebooklist[2]= book.volumeInfo.publishedDate;
+        }else{
+            createbooklist['year']= "";
+            createfakebooklist[2]= "";
         }
-    $scope.sendtoberead = function (a){
+        createbooklist['read']= "false";
+        createfakebooklist[4]= "false";
+        createbooklist['favorite']= "false";
+        createfakebooklist[5]= "false";
+        createbooklist['toberead']= "true";
+        createfakebooklist[6]= "true";
 
-        var b = $scope.books.indexOf(a);
 
-        var databook = {
-            name : $scope.books[b][0], year : $scope.books[b][2],toberead:$scope.books[b][6]
-        };
-
-
-        $http.post("/sendtoberead",databook).then(successCallback, errorCallback);
+        $http.post("/post",createbooklist ).then(successCallback, errorCallback);
         function successCallback(resp){
             $scope.backmsg = resp.data['status'];
             var control=resp.data['check'];
-            if(control == 'true'){
+            if(control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+                $scope.books.push(createfakebooklist);
+            }else {
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+            }
+
+
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+
+            });
+
+        }
+
+
+
+    }
+
+    $scope.showBook = function(book) {
+        $scope.current_book = book;
+        $("#myModal").modal("show");
+    }
+
+    $scope.sendtoread = function (bookobj){
+
+        var bookindex = $scope.books.indexOf(bookobj);
+
+        var bookdata = {
+            name : $scope.books[bookindex][0], year : $scope.books[bookindex][2],read : $scope.books[bookindex][4]
+        };
+
+        $http.post("/sendtoread",bookdata).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+                $scope.books[bookindex][6] = 'false';
+                $scope.books[bookindex][4] = 'true';
+            }else{
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+                });
+            }
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+            });
+        }
+    }
+
+    $scope.sendtofav = function (bookobj){
+
+        var bookindex = $scope.books.indexOf(bookobj);
+
+        var databook = {
+            name : $scope.books[bookindex][0], year : $scope.books[bookindex][2],fav:$scope.books[bookindex][5]
+        };
+        $http.post("/sendtofav",databook).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
@@ -751,15 +627,15 @@ app.controller("myCtrlFav", function($scope, $http){
                     }
 
                 });
-                $scope.books[b][5] = true;
-            }else if(control == 'none'){
+                $scope.books[bookindex][5] = 'true';
+            }else{
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
                     message: $scope.backmsg
                 },{
                     // settings3
-                    type: 'warning',
+                    type: 'danger',
                     allow_dismiss: true,
                     placement: {
                         from: "bottom",
@@ -776,6 +652,73 @@ app.controller("myCtrlFav", function($scope, $http){
                     }
 
                 });
+            }
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post failed.';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+            });
+        }
+    }
+
+    $scope.sendtoberead = function (bookobj){
+
+        var bookindex = $scope.books.indexOf(bookobj);
+
+        var databook = {
+            name : $scope.books[bookindex][0], year : $scope.books[bookindex][2],toberead:$scope.books[bookindex][6]
+        };
+
+        $http.post("/sendtoberead",databook).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings3
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+                $scope.books[bookindex][6] = 'true';
+                $scope.books[bookindex][4] = 'false';
             }else{
                 $.notify({
                     // options
@@ -783,6 +726,99 @@ app.controller("myCtrlFav", function($scope, $http){
                     message: $scope.backmsg
                 },{
                     // settings3
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+                });
+            }
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post failed.';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+
+            });
+
+        }
+
+    }
+
+    $scope.removeFav= function (bookobj){
+
+        var bookindex = $scope.books.indexOf(bookobj);
+
+        var databook = {
+            name : $scope.books[bookindex][0], year : $scope.books[bookindex][2]
+        }
+
+        $http.post("/removefav",databook).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+                $scope.books[bookindex][5] = 'false';
+
+            }else{
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
                     type: 'danger',
                     allow_dismiss: true,
                     placement: {
@@ -834,79 +870,46 @@ app.controller("myCtrlFav", function($scope, $http){
 
     }
 
+    $scope.deleteBook = function (bookobj){
+
+        var bookindex = $scope.books.indexOf(bookobj);
+
+        var databook = {
+            name : $scope.books[bookindex][0], year : $scope.books[bookindex][2]
+        }
+
+        $http.post("/deletebook",databook).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if (control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+                $scope.books.splice(bookindex,1);
 
 
-        $scope.removeFav= function (a){
-
-            var b = $scope.books.indexOf(a);
-
-
-
-
-            var databook = {
-                name : $scope.books[b][0], year : $scope.books[b][2]
-            }
-
-            $http.post("/removefav",databook).then(successCallback, errorCallback);
-            function successCallback(resp){
-                $scope.backmsg = resp.data['status'];
-                var control=resp.data['check'];
-                if(control != 'false'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'success',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                    $scope.books[b][5] = false;3
-
-                }else{
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'danger',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                }
-
-
-            }
-            function errorCallback(){
-                $scope.backmsg = 'Post failed.';
+            }else{
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-warning-sign',
@@ -930,115 +933,44 @@ app.controller("myCtrlFav", function($scope, $http){
                     }
 
                 });
-
             }
+
+
 
         }
-        $scope.deleteBook = function (a){
-
-            var b = $scope.books.indexOf(a);
-
-            var databook = {
-                name : $scope.books[b][0], year : $scope.books[b][2]
-            }
-
-
-
-            $http.post("/deletebook",databook).then(successCallback, errorCallback);
-            function successCallback(resp){
-                $scope.backmsg = resp.data['status'];
-                var control=resp.data['check'];
-                if (control != 'false'){
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'success',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
-                    $scope.books.splice(b,1);
-
-
-                }else{
-                    $.notify({
-                        // options
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        message: $scope.backmsg
-                    },{
-                        // settings
-                        type: 'danger',
-                        allow_dismiss: true,
-                        placement: {
-                            from: "bottom",
-                            align: "center"
-                        },
-                        offset: 20,
-                        spacing: 10,
-                        z_index: 1031,
-                        delay: 5000,
-                        timer: 1000,
-                        animate: {
-                            enter: 'animated fadeInUp',
-                            exit: 'animated fadeOutDown'
-                        }
-
-                    });
+        function errorCallback(){
+            $scope.backmsg = 'Post Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
                 }
 
-
-
-            }
-            function errorCallback(){
-                $scope.backmsg = 'Post Failed';
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-warning-sign',
-                    message: $scope.backmsg
-                },{
-                    // settings
-                    type: 'danger',
-                    allow_dismiss: true,
-                    placement: {
-                        from: "bottom",
-                        align: "center"
-                    },
-                    offset: 20,
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 5000,
-                    timer: 1000,
-                    animate: {
-                        enter: 'animated fadeInUp',
-                        exit: 'animated fadeOutDown'
-                    }
-
-                });
-
-            }
-
-
+            });
 
         }
+
+
+
+    }
 
 
 
 
 });
-
-
