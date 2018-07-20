@@ -18,7 +18,7 @@ app.controller("myCtrl", function($scope, $http){
             if(control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings
@@ -115,7 +115,7 @@ app.controller("myCtrlFav", function($scope, $http){
         if(control){
           $.notify({
               // options
-              icon: 'glyphicon glyphicon-warning-sign',
+              icon: 'glyphicon glyphicon-info-sign',
               message: $scope.backmsg
           },{
               // settings
@@ -229,7 +229,7 @@ app.controller("myCtrlFav", function($scope, $http){
 
                     $.notify({
                         // options
-                        icon: 'glyphicon glyphicon-warning-sign',
+                        icon: 'glyphicon glyphicon-info-sign',
                         message: $scope.backmsg
                     },{
                         // settings
@@ -415,7 +415,7 @@ app.controller("myCtrlFav", function($scope, $http){
             if(control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings
@@ -517,7 +517,7 @@ app.controller("myCtrlFav", function($scope, $http){
             if(control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings
@@ -606,7 +606,7 @@ app.controller("myCtrlFav", function($scope, $http){
             if(control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings3
@@ -696,7 +696,7 @@ app.controller("myCtrlFav", function($scope, $http){
             if(control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings3
@@ -789,7 +789,7 @@ app.controller("myCtrlFav", function($scope, $http){
             if(control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings
@@ -885,7 +885,7 @@ app.controller("myCtrlFav", function($scope, $http){
             if (control){
                 $.notify({
                     // options
-                    icon: 'glyphicon glyphicon-warning-sign',
+                    icon: 'glyphicon glyphicon-info-sign',
                     message: $scope.backmsg
                 },{
                     // settings

@@ -14,6 +14,16 @@ db = mysql.connector.connect(user='root', database='library', password='Hu192478
 
 cur = db.cursor()
 
+def reconnectDatabase():
+    global db, cur
+    if not db.is_connected():
+        db = mysql.connector.connect(user='root', database='library', password='Hu192478')
+        cur = db.cursor()
+
+@app.before_request
+def before_request():
+    reconnectDatabase()
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -58,30 +68,25 @@ def addOne():
         getbooks = cur.fetchall()
 
         if(len(getbooks) == 0):
-            if imageURL == '':
-                add_book = ("INSERT INTO book_list "
-                            "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
-                            " VALUES (%s,%s,%s, %s, %s, %s, %s)")
-                data_word = (str(bookname.encode('utf-8')), str(authorname.encode('utf-8')), str(year), str(imageURL), str(read),str(favorite), str(toberead))
-                cur.execute(add_book, data_word)
-                db.commit()
-                return jsonify({'status': 'Saved', 'check': True})
-            else:
+            if imageURL != '':
+
                 returnurl = urllib2.urlopen(imageURL)
                 if returnurl.code == 200:
-                    new_image_url = "static/img/" + hashlib.sha256(combineforhash.encode('utf-8')).hexdigest() + ".jpg"
-                    imagefile = open(new_image_url, 'wb')
-                    imagefile.write(urllib.urlopen(imageURL).read())
+                    new_image_url = imageURL
+                    imageURL = "static/img/" + hashlib.sha256(combineforhash.encode('utf-8')).hexdigest() + ".jpg"
+                    imagefile = open(imageURL, 'wb')
+                    imagefile.write(urllib.urlopen(new_image_url).read())
                     imagefile.close
-                    add_book = ("INSERT INTO book_list "
-                                "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
-                                " VALUES (%s,%s,%s, %s, %s, %s, %s)")
-                    data_word = (str(bookname.encode('utf-8')), str(authorname.encode('utf-8')), str(year), str(new_image_url),str(read), str(favorite), str(toberead))
-                    cur.execute(add_book, data_word)
-                    db.commit()
-                    return jsonify({'status': 'Saved', 'check': True})
                 else:
                     return jsonify({'status': 'This url not exist', 'check': False})
+
+            add_book = ("INSERT INTO book_list "
+                        "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
+                        " VALUES (%s,%s,%s, %s, %s, %s, %s)")
+            data_word = (str(bookname.encode('utf-8')), str(authorname.encode('utf-8')), str(year), str(imageURL), str(read),str(favorite), str(toberead))
+            cur.execute(add_book, data_word)
+            db.commit()
+            return jsonify({'status': 'Saved', 'check': True})
         else:
             return jsonify({'status': 'This book already exists', 'check': False})
     except:
