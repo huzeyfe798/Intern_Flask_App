@@ -21,7 +21,7 @@ app.config['MAIL_USE_SSL']=True
 
 mail=Mail(app)
 
-db = mysql.connector.connect(user='root', database='library', password='Hu192478')
+db = mysql.connector.connect(user='root', database='library', password='yourdatabasepassword')
 
 cur = db.cursor()
 
