@@ -21,7 +21,7 @@ app.config['MAIL_USE_SSL']=True
 
 mail=Mail(app)
 
-db = mysql.connector.connect(user='root', database='library', password='yourdatabasepassword')
+db = mysql.connector.connect(user='root', database='library', password='Hu192478')
 
 cur = db.cursor()
 
@@ -230,7 +230,7 @@ def addOne():
         read = request.json['read']
         favorite = request.json['favorite']
         toberead = request.json['toberead']
-        combineforhash = bookname + year
+        combineforhash = bookname + year + session['id']
 
         search_book = (" SELECT *  FROM `%s`"
                        "   WHERE `bookname`=%s AND `year`=%s")
@@ -412,10 +412,10 @@ def removefav():
 
 @app.route('/deletebook', methods=['POST'])
 def deletebook():
-    try:
+
         query1 = (" SELECT imageURL  FROM `%s`"
                   "   WHERE `bookname`=%s AND `year`=%s")
-        query = (" DELETE  FROM book_list"
+        query = (" DELETE  FROM `%s`"
                  "   WHERE `bookname`=%s AND `year`=%s")
 
         bookinfo = json.loads(request.data)
@@ -434,7 +434,7 @@ def deletebook():
         db.commit()
 
         return jsonify({'status': 'Book deleted.', 'check': True })
-    except:
+
         return jsonify({'status': 'Book cant deleted', 'check': False})
 
 
