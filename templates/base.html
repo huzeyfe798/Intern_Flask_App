@@ -16,7 +16,7 @@
 
 
 <body>
-<div>
+<div ng-controller="myCtrl">
 
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -39,6 +39,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="addbook"><span class="glyphicon glyphicon-book"></span> Add Book</a></li>
+                    <li><a href="/" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
                 </ul>
             </div>
         </div>

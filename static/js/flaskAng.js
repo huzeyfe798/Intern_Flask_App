@@ -8,6 +8,43 @@ app.config(function($interpolateProvider) {
 
 app.controller("myCtrl", function($scope, $http){
 
+    $scope.logout = function(){
+
+        $http.get('/logout').then(successCallback, errorCallback);
+    function successCallback(){
+
+        }
+
+        function errorCallback(){
+            $scope.backmsg = 'Logout Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+
+            });
+
+
+        }
+    }
+
     $scope.change1 = function () {
         $http.post("/post",{'imageURL':$scope.imageURL,'bookname': $scope.bookName,'authorname': $scope.authorName,'year': $scope.writtenYear,'favorite': $scope.favoVal,
             'read': $scope.readVal,'toberead': $scope.tobeVal}).then(successCallback, errorCallback);
@@ -97,6 +134,255 @@ app.controller("myCtrl", function($scope, $http){
 
     };
 
+    $scope.registeruser = function () {
+        $http.post("/postuser",{'username':$scope.username,'password': $scope.userpassword,'userpasswordconfirm': $scope.userpasswordconfir,'email': $scope.email}).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-info-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+            }else{
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+                });
+            }
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+            });
+        }
+
+    }
+
+    $scope.login = function(){
+        $http.post("/login",{'username':$scope.username,'password': $scope.userpassword}).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
+                if($scope.backmsg == 'success'){
+                    window.location = "/home"
+                }
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-info-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+            }else{
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+                });
+            }
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+            });
+        }
+    }
+
+    $scope.sendpass = function () {
+        $http.post("/sendpass",{'email': $scope.email}).then(successCallback, errorCallback);
+        function successCallback(resp){
+            $scope.backmsg = resp.data['status'];
+            var control=resp.data['check'];
+            if(control){
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-info-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'success',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+
+                });
+            }else{
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-warning-sign',
+                    message: $scope.backmsg
+                },{
+                    // settings
+                    type: 'danger',
+                    allow_dismiss: true,
+                    placement: {
+                        from: "bottom",
+                        align: "center"
+                    },
+                    offset: 20,
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 5000,
+                    timer: 1000,
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutDown'
+                    }
+                });
+            }
+        }
+        function errorCallback(){
+            $scope.backmsg = 'Post Failed';
+            $.notify({
+                // options
+                icon: 'glyphicon glyphicon-warning-sign',
+                message: $scope.backmsg
+            },{
+                // settings
+                type: 'danger',
+                allow_dismiss: true,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                },
+                offset: 20,
+                spacing: 10,
+                z_index: 1031,
+                delay: 5000,
+                timer: 1000,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutDown'
+                }
+            });
+        }
+
+
+
+    }
 });
 
 
@@ -110,7 +396,7 @@ app.controller("myCtrlFav", function($scope, $http){
     function successCallback(datas){
         $scope.books = datas.data[1];
         $scope.backmsg = datas.data[0]['status'];
-        var control = datas.data[0]['check']
+        var control = datas.data[0]['check'];
 
         if(control){
           $.notify({
