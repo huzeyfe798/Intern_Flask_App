@@ -121,7 +121,6 @@ def registeruser():
     try:
         username = request.json['username']
         if (request.json['password'] != request.json['userpasswordconfirm']):
-            print "aaaa"
             return jsonify({'status': 'Check your passwords', 'check': False})
 
         password = request.json['password']
@@ -202,7 +201,6 @@ def confirmation():
                 "`favorite` varchar(45) DEFAULT NULL,"
                 "`toberead` varchar(45) DEFAULT NULL )")
 
-    print(code)
     user_data1 = (code[:64],)
 
     cur.execute(query1,user_data1)
