@@ -103,7 +103,7 @@ def login():
         if(password == getuser[0][3]):
 
             if(getuser[0][4] != 1):
-                return jsonify({'status': 'Please confirmation your account!', 'check': False})
+                return jsonify({'status': 'Please confirm your account!', 'check': False})
 
             session['id']=getuser[0][0]
 
@@ -113,7 +113,7 @@ def login():
         return jsonify({'status': 'Your password not correct!', 'check': False})
 
 
-    return jsonify({'status': 'This account cant exist!', 'check': False})
+    return jsonify({'status': 'This account no exist!', 'check': False})
 
 @app.route('/postuser', methods =['POST'])
 def registeruser():
@@ -173,7 +173,7 @@ def sendpass():
         getuser = cur.fetchall()
 
         msg = Message('Hello',sender = 'flasklibraryapp@gmail.com', recipients=[email])
-        msg.body = "Your id:"+getuser[0][1]+" and your password:" + getuser[0][3]
+        msg.body = "Your id: "+getuser[0][1]+" and your password: " + getuser[0][3]
         mail.send(msg)
 
         return jsonify({'status': 'Please confirm your email', 'check': True})
@@ -247,7 +247,7 @@ def addOne():
                     imagefile.write(urllib.urlopen(new_image_url).read())
                     imagefile.close
                 else:
-                    return jsonify({'status': 'This url not exist', 'check': False})
+                    return jsonify({'status': 'This url no exist', 'check': False})
 
             add_book = ("INSERT INTO `%s`"
                         "(`bookname`, `authorname`, `year`, `imageURL`, `read` , `favorite` , `toberead`)"
@@ -259,7 +259,7 @@ def addOne():
         else:
             return jsonify({'status': 'This book already exists', 'check': False})
     except:
-        return jsonify({'status': 'Cant Saved', 'check': False})
+        return jsonify({'status': 'Could not be saved', 'check': False})
 
 @app.route('/jsondatas', methods=['GET'])
 def takeAll():
@@ -306,7 +306,7 @@ def postsearch():
 
         else:
 
-            return jsonify({'status': 'This book not in library.', 'check': False},books1)
+            return jsonify({'status': 'This book not in your library.', 'check': False},books1)
 
      except:
 
@@ -318,7 +318,7 @@ def sendtoread():
         bookinfo = json.loads(request.data)
 
         if bookinfo['read'] == 'true':
-            return jsonify({'status': 'Book already exist in read.', 'check': False })
+            return jsonify({'status': 'Book already exist in your read book list.', 'check': False })
 
         query = (" UPDATE `%s`"
                  "  SET `read`='true',`toberead`='false'"
@@ -330,11 +330,11 @@ def sendtoread():
 
         db.commit()
 
-        return jsonify({'status': 'Book send to read.', 'check': True})
+        return jsonify({'status': 'Book add to your read book list.', 'check': True})
 
     except:
 
-        return jsonify({'status': 'Book cant send to read.', 'check': False})
+        return jsonify({'status': 'Book can not be add to read.', 'check': False})
 
 @app.route('/sendtoberead', methods=['POST'])
 def sendtoberead():
@@ -342,7 +342,7 @@ def sendtoberead():
         bookinfo = json.loads(request.data)
 
         if bookinfo['toberead'] == 'true':
-            return jsonify({'status': 'Book already exist in toberead.', 'check': False})
+            return jsonify({'status': 'Book already exist in your toberead book list.', 'check': False})
 
         query = (" UPDATE `%s`"
                  "  SET `read`='false',`toberead`='true'"
@@ -354,11 +354,11 @@ def sendtoberead():
 
         db.commit()
 
-        return jsonify({'status': 'Book send to be read.', 'check': True})
+        return jsonify({'status': 'Book add your toberead book list.', 'check': True})
 
     except:
 
-        return jsonify({'status': 'Book cant send to be read.', 'check': False})
+        return jsonify({'status': 'Book can not be add your toberead book list.', 'check': False})
 
 
 @app.route('/sendtofav', methods=['POST'])
@@ -386,7 +386,7 @@ def sendtofav():
 
     except:
 
-        return jsonify({'status': 'Book cant add to favorite.', 'check': False})
+        return jsonify({'status': 'Book can not be add to favorite.', 'check': False})
 
 
 @app.route('/removefav', methods=['POST'])
@@ -405,7 +405,7 @@ def removefav():
 
     except:
 
-        return jsonify({'status': 'Book cant remove from favorite.', 'check': False})
+        return jsonify({'status': 'Book can not be remove from favorite.', 'check': False})
 
 
 @app.route('/deletebook', methods=['POST'])
@@ -433,7 +433,7 @@ def deletebook():
 
         return jsonify({'status': 'Book deleted.', 'check': True })
 
-        return jsonify({'status': 'Book cant deleted', 'check': False})
+        return jsonify({'status': 'Book can not be deleted', 'check': False})
 
 
 if __name__ == '__main__':

@@ -398,31 +398,8 @@ app.controller("myCtrlFav", function($scope, $http){
         $scope.backmsg = datas.data[0]['status'];
         var control = datas.data[0]['check'];
 
-        if(control){
-          $.notify({
-              // options
-              icon: 'glyphicon glyphicon-info-sign',
-              message: $scope.backmsg
-          },{
-              // settings
-              type: 'success',
-              allow_dismiss: true,
-              placement: {
-                  from: "bottom",
-                  align: "center"
-              },
-              offset: 20,
-              spacing: 10,
-              z_index: 1031,
-              delay: 5000,
-              timer: 1000,
-              animate: {
-                  enter: 'animated fadeInUp',
-                  exit: 'animated fadeOutDown'
-              }
+        if(!control){
 
-          });
-        }else{
           $.notify({
               // options
               icon: 'glyphicon glyphicon-warning-sign',
@@ -690,8 +667,8 @@ app.controller("myCtrlFav", function($scope, $http){
         createfakebooklist[4]= "false";
         createbooklist['favorite']= "false";
         createfakebooklist[5]= "false";
-        createbooklist['toberead']= "true";
-        createfakebooklist[6]= "true";
+        createbooklist['toberead']= "false";
+        createfakebooklist[6]= "false";
 
 
         $http.post("/post",createbooklist ).then(successCallback, errorCallback);
